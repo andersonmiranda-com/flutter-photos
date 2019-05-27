@@ -111,8 +111,8 @@ class _GalleryPageState extends State<GalleryPage> {
                                       ],
                                       stops: [
                                         0.0,
-                                        0.3,
-                                        0.6,
+                                        0.5,
+                                        0.7,
                                         1.0
                                       ])),
                             )
