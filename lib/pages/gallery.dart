@@ -38,11 +38,8 @@ class _GalleryPageState extends State<GalleryPage> {
           Navigator.push<bool>(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => PhotoPage(
-                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
-                        proofRows[index]["file"],
-                    index,
-                    proofRows[index]["file"]),
+                builder: (BuildContext context) => PhotoPage(proofRows, index,
+                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/"),
               ));
         },
         child: Container(
@@ -57,12 +54,15 @@ class _GalleryPageState extends State<GalleryPage> {
   _buildProofGrid() {
     Widget proofGrid;
     if (proofRows.length > 0) {
-      proofGrid = GridView.builder(
-          padding: EdgeInsets.only(top: 0),
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-          itemBuilder: _buildProofItem,
-          itemCount: proofRows.length);
+      proofGrid = OrientationBuilder(builder: (context, orientation) {
+        int columnCount = (orientation == Orientation.portrait) ? 4 : 8;
+        return GridView.builder(
+            padding: EdgeInsets.only(top: 0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columnCount),
+            itemBuilder: _buildProofItem,
+            itemCount: proofRows.length);
+      });
     } else {
       proofGrid = Container();
     }
@@ -104,7 +104,7 @@ class _GalleryPageState extends State<GalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody(), backgroundColor: Colors.black87);
+    return Scaffold(body: _buildBody(), backgroundColor: Color(0xff202020));
   }
 }
 
