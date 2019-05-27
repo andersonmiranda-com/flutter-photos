@@ -87,10 +87,36 @@ class _GalleryPageState extends State<GalleryPage> {
                   title: Text(
                       proofDetails["name"] != null ? proofDetails["name"] : ""),
                   background: proofDetails["name"] != null
-                      ? Image.network(
-                          "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
+                      ? Stack(
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.network(
+                                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
 //                             + proofDetails["cover"],
-                          fit: BoxFit.cover,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  gradient: LinearGradient(
+                                      begin: FractionalOffset.topCenter,
+                                      end: FractionalOffset.bottomCenter,
+                                      colors: [
+                                        Color(0x00000000),
+                                        Color(0x00000000),
+                                        Color(0x20000000),
+                                        Color(0x90000000),
+                                      ],
+                                      stops: [
+                                        0.0,
+                                        0.3,
+                                        0.6,
+                                        1.0
+                                      ])),
+                            )
+                          ],
                         )
                       : Container(),
                   centerTitle: false),
