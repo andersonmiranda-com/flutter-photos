@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           textTheme: TextTheme(
             title: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            body1: TextStyle(fontSize: 14.0),
+//            body1: TextStyle(fontSize: 14.0),
           )),
       home: GalleryPage(),
     );

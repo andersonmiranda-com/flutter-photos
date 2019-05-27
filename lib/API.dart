@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-const baseUrl = "http://andersonmiranda.clicster.co/api";
+const baseUrl = "https://andersonmiranda.clicster.com/api";
 
 class API {
   static Future getProof(unique_id) {
