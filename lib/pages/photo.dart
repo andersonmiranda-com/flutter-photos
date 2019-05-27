@@ -13,16 +13,10 @@ class PhotoPage extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color(0xff202020),
         body: Container(
-            child: Column(
+            child: Stack(
           children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: SafeArea(
-                child: BackButton(),
-              ),
-            ),
             CarouselSlider(
-              height: 400.0,
+              height: MediaQuery.of(context).size.height - 10,
               aspectRatio: 16 / 9,
               initialPage: index,
               items: proofRows.map((photo) {
@@ -38,6 +32,26 @@ class PhotoPage extends StatelessWidget {
                   },
                 );
               }).toList(),
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: SafeArea(
+                      child: BackButton(),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: SafeArea(
+                      child: BackButton(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         )));
