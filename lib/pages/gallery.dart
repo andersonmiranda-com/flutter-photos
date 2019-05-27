@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:AlboomProof/API.dart';
+import 'package:AlboomProof/pages/photo.dart';
 
 class GalleryPage extends StatefulWidget {
   @override
@@ -32,13 +33,26 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   Widget _buildProofItem(BuildContext context, int index) {
-    return Container(
-        padding: EdgeInsets.all(2.0),
-        child: Image.network(
-          "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
-              proofRows[index]["file"],
-          fit: BoxFit.cover,
-        ));
+    return InkWell(
+        onTap: () {
+          Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => PhotoPage(
+                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
+                        proofRows[index]["file"],
+                    index),
+              ));
+        },
+        child: Hero(
+            tag: "photo_$index",
+            child: Container(
+                padding: EdgeInsets.all(2.0),
+                child: Image.network(
+                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
+                      proofRows[index]["file"],
+                  fit: BoxFit.cover,
+                ))));
   }
 
   _buildProofGrid() {
@@ -63,35 +77,34 @@ class _GalleryPageState extends State<GalleryPage> {
       );
     } else {
       return new NestedScrollView(
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                    proofDetails["name"] != null ? proofDetails["name"] : ""),
-                background: proofDetails["name"] != null
-                    ? Image.network(
-                        "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                      proofDetails["name"] != null ? proofDetails["name"] : ""),
+                  background: proofDetails["name"] != null
+                      ? Image.network(
+                          "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
 //                             + proofDetails["cover"],
-                        fit: BoxFit.cover,
-                      )
-                    : Container(),
-                centerTitle: false),
-          ),
-        ];
-      },
-      body: Center(child: _buildProofGrid()),
-    );
+                          fit: BoxFit.cover,
+                        )
+                      : Container(),
+                  centerTitle: false),
+            ),
+          ];
+        },
+        body: Center(child: _buildProofGrid()),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _buildBody());
+    return Scaffold(body: _buildBody());
   }
 }
 
