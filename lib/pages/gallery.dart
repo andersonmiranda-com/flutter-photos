@@ -41,18 +41,17 @@ class _GalleryPageState extends State<GalleryPage> {
                 builder: (BuildContext context) => PhotoPage(
                     "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
                         proofRows[index]["file"],
-                    index),
+                    index,
+                    proofRows[index]["file"]),
               ));
         },
-        child: Hero(
-            tag: "photo_$index",
-            child: Container(
-                padding: EdgeInsets.all(2.0),
-                child: Image.network(
-                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
-                      proofRows[index]["file"],
-                  fit: BoxFit.cover,
-                ))));
+        child: Container(
+            padding: EdgeInsets.all(2.0),
+            child: Image.network(
+              "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
+                  proofRows[index]["file"],
+              fit: BoxFit.cover,
+            )));
   }
 
   _buildProofGrid() {
@@ -83,6 +82,7 @@ class _GalleryPageState extends State<GalleryPage> {
               expandedHeight: 200.0,
               floating: false,
               pinned: true,
+              backgroundColor: Colors.black54,
               flexibleSpace: FlexibleSpaceBar(
                   title: Text(
                       proofDetails["name"] != null ? proofDetails["name"] : ""),
@@ -104,7 +104,7 @@ class _GalleryPageState extends State<GalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody());
+    return Scaffold(body: _buildBody(), backgroundColor: Colors.black87);
   }
 }
 

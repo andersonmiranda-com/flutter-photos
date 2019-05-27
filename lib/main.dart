@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'Gotham',
           primarySwatch: Colors.blue,
+          backgroundColor: Colors.black87,
           textTheme: TextTheme(
             title: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
 //            body1: TextStyle(fontSize: 14.0),
