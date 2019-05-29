@@ -109,7 +109,7 @@ class PhotoPageState extends State<PhotoPage> {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: SafeArea(
-                      child: InkWell(
+                      child: GestureDetector(
                         onTap: () {
                           _setSelect(_currentSlide);
                         },
@@ -120,8 +120,8 @@ class PhotoPageState extends State<PhotoPage> {
                                 size: 30.0,
                               )
                             : Icon(
-                                Icons.radio_button_unchecked,
-                                color: Color(0x30ffffff),
+                                Icons.check,
+                                color: Color(0x60ffffff),
                                 size: 30.0,
                               ),
                       ),

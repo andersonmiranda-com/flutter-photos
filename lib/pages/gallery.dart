@@ -45,16 +45,24 @@ class _GalleryPageState extends State<GalleryPage> {
         InkWell(
           onTap: () {
             Navigator.push<bool>(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => PhotoPage(
-                    proofRows,
-                    index,
-                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/",
-                    _setSelected),
-              )
-            );
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PhotoPage(
+                      proofRows,
+                      index,
+                      "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/",
+                      _setSelected),
+                ));
           },
+          onDoubleTap: () => {
+                setState(() {
+                  if (proofRows[index]["taken"] == "1") {
+                    proofRows[index]["taken"] = "0";
+                  } else {
+                    proofRows[index]["taken"] = "1";
+                  }
+                })
+              },
           child: Container(
             constraints: BoxConstraints.expand(),
             padding: EdgeInsets.all(1.0),
@@ -75,7 +83,7 @@ class _GalleryPageState extends State<GalleryPage> {
           padding: EdgeInsets.all(3.0),
           child: Align(
             alignment: Alignment.topRight,
-            child: InkWell(
+            child: GestureDetector(
               onTap: () => {
                     setState(() {
                       if (proofRows[index]["taken"] == "1") {
