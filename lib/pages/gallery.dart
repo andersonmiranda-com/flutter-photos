@@ -44,16 +44,16 @@ class _GalleryPageState extends State<GalleryPage> {
             ));
       },
       child: Container(
-        padding: EdgeInsets.all(2.0),
+        padding: EdgeInsets.all(1.0),
         child: CachedNetworkImage(
           imageUrl:
               "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
                   proofRows[index]["file"],
           fit: BoxFit.cover,
-          placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
-              )),
+          // placeholder: (context, url) => Center(
+          //         child: CircularProgressIndicator(
+          //       valueColor: new AlwaysStoppedAnimation(Color(0xff303030)),
+          //     )),
           //errorWidget: (context, url, error) => new Icon(Icons.error),
         ),
       ),
