@@ -27,36 +27,79 @@ class _GalleryPageState extends State<GalleryPage> {
     });
   }
 
-  initState() {
+  void initState() {
     super.initState();
     _loadingInProgress = true;
     _getProof("k78si6");
   }
 
+  void _setSelected(int i, String state) {
+    setState(() {
+      proofRows[i]["taken"] = state;
+    });
+  }
+
   Widget _buildProofItem(BuildContext context, int index) {
-    return InkWell(
-      onTap: () {
-        Navigator.push<bool>(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => PhotoPage(proofRows, index,
-                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/"),
-            ));
-      },
-      child: Container(
-        padding: EdgeInsets.all(1.0),
-        child: CachedNetworkImage(
-          imageUrl:
-              "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
-                  proofRows[index]["file"],
-          fit: BoxFit.cover,
-          // placeholder: (context, url) => Center(
-          //         child: CircularProgressIndicator(
-          //       valueColor: new AlwaysStoppedAnimation(Color(0xff303030)),
-          //     )),
-          //errorWidget: (context, url, error) => new Icon(Icons.error),
+    return Stack(
+      children: <Widget>[
+        InkWell(
+          onTap: () {
+            Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => PhotoPage(
+                    proofRows,
+                    index,
+                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/",
+                    _setSelected),
+              )
+            );
+          },
+          child: Container(
+            constraints: BoxConstraints.expand(),
+            padding: EdgeInsets.all(1.0),
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
+                      proofRows[index]["file"],
+              fit: BoxFit.cover,
+              // placeholder: (context, url) => Center(
+              //         child: CircularProgressIndicator(
+              //       valueColor: new AlwaysStoppedAnimation(Color(0xff303030)),
+              //     )),
+              //errorWidget: (context, url, error) => new Icon(Icons.error),
+            ),
+          ),
         ),
-      ),
+        Container(
+          padding: EdgeInsets.all(3.0),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: InkWell(
+              onTap: () => {
+                    setState(() {
+                      if (proofRows[index]["taken"] == "1") {
+                        proofRows[index]["taken"] = "0";
+                      } else {
+                        proofRows[index]["taken"] = "1";
+                      }
+                    })
+                  },
+              child: proofRows[index]["taken"] == "1"
+                  ? Icon(
+                      Icons.check_circle,
+                      color: Colors.amber,
+                      size: 20.0,
+                    )
+                  : Icon(
+                      Icons.radio_button_unchecked,
+                      color: Color(0x00000000),
+                      size: 20.0,
+                    ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -104,8 +147,8 @@ class _GalleryPageState extends State<GalleryPage> {
                               width: MediaQuery.of(context).size.width,
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
-//                             + proofDetails["cover"],
+                                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
+                                        proofDetails["cover"],
                                 fit: BoxFit.cover,
                               ),
                             ),
