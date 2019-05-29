@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:AlboomProof/API.dart';
 import 'package:AlboomProof/pages/photo.dart';
 
@@ -34,21 +35,29 @@ class _GalleryPageState extends State<GalleryPage> {
 
   Widget _buildProofItem(BuildContext context, int index) {
     return InkWell(
-        onTap: () {
-          Navigator.push<bool>(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => PhotoPage(proofRows, index,
-                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/"),
-              ));
-        },
-        child: Container(
-            padding: EdgeInsets.all(2.0),
-            child: Image.network(
+      onTap: () {
+        Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => PhotoPage(proofRows, index,
+                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/"),
+            ));
+      },
+      child: Container(
+        padding: EdgeInsets.all(2.0),
+        child: CachedNetworkImage(
+          imageUrl:
               "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/thumbnails/proofs/723/" +
                   proofRows[index]["file"],
-              fit: BoxFit.cover,
-            )));
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
+              )),
+          //errorWidget: (context, url, error) => new Icon(Icons.error),
+        ),
+      ),
+    );
   }
 
   _buildProofGrid() {
@@ -72,7 +81,9 @@ class _GalleryPageState extends State<GalleryPage> {
   Widget _buildBody() {
     if (_loadingInProgress) {
       return new Center(
-        child: new CircularProgressIndicator(),
+        child: new CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
+        ),
       );
     } else {
       return new NestedScrollView(
@@ -91,8 +102,9 @@ class _GalleryPageState extends State<GalleryPage> {
                           children: <Widget>[
                             Container(
                               width: MediaQuery.of(context).size.width,
-                              child: Image.network(
-                                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/292-0060.jpg",
 //                             + proofDetails["cover"],
                                 fit: BoxFit.cover,
                               ),

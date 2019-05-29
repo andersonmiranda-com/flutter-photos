@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PhotoPage extends StatelessWidget {
   final List proofRows;
@@ -25,8 +26,13 @@ class PhotoPage extends StatelessWidget {
                     return Container(
                         width: MediaQuery.of(context).size.width,
                         margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Image.network(
-                          urlPrefix + photo["file"],
+                        child: CachedNetworkImage(
+                          imageUrl: urlPrefix + photo["file"],
+                          placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation(
+                                    Color(0xff404040)),
+                              )),
                           fit: BoxFit.contain,
                         ));
                   },
