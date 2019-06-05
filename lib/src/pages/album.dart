@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:AlboomProof/src/providers/API.dart';
-import 'package:AlboomProof/src/pages/photo.dart';
 
 class AlbumPage extends StatefulWidget {
   AlbumPage({Key key}) : super(key: key);
@@ -29,7 +28,6 @@ class _AlbumPageState extends State<AlbumPage> {
   bool _showflipRight = false;
   bool _directionLeft = false;
   bool _isMoving = false;
-  bool _unlockedFlip = true;
   bool _pageChanged = false;
   int flipDuration = 0;
 
@@ -122,11 +120,14 @@ class _AlbumPageState extends State<AlbumPage> {
     return GestureDetector(
       //onTap: () => _decrIndex(),
       child: SizedBox.expand(
-        child: CachedNetworkImage(
-          imageUrl:
-              "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                  proofRows[_spreadLeftIndex]["file"],
-          fit: BoxFit.contain,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: CachedNetworkImage(
+            imageUrl:
+                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
+                    proofRows[_spreadLeftIndex]["file"],
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
@@ -137,11 +138,21 @@ class _AlbumPageState extends State<AlbumPage> {
       onPanUpdate: (details) => _updateOffset(details),
       //onTap: () => _incrIndex(),
       child: SizedBox.expand(
-        child: CachedNetworkImage(
-          imageUrl:
-              "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                  proofRows[_spreadRightIndex]["file"],
-          fit: BoxFit.contain,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: CachedNetworkImage(
+            imageUrl:
+                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
+                    proofRows[_spreadRightIndex]["file"],
+            fit: BoxFit.contain,
+            placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation(
+                      Color(0xff303030),
+                    ),
+                  ),
+                ),
+          ),
         ),
       ),
     );
@@ -150,17 +161,27 @@ class _AlbumPageState extends State<AlbumPage> {
   Widget _buildAlbumFlipLeft() {
     return Transform(
       transform: Matrix4.identity()
-        ..setEntry(3, 2, 0.001) // perspective
+        ..setEntry(3, 2, 0.0008) // perspective
         ..rotateY(_flipAngleDegLeft / 180 * pi),
       alignment: FractionalOffset.centerRight,
       child: GestureDetector(
         //onTap: () => _decrIndex(),
         child: SizedBox.expand(
-          child: CachedNetworkImage(
-            imageUrl:
-                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                    proofRows[_flipLeftIndex]["file"],
-            fit: BoxFit.contain,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
+                      proofRows[_flipLeftIndex]["file"],
+              fit: BoxFit.contain,
+              placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation(
+                        Color(0xff303030),
+                      ),
+                    ),
+                  ),
+            ),
           ),
         ),
       ),
@@ -170,17 +191,27 @@ class _AlbumPageState extends State<AlbumPage> {
   Widget _buildAlbumFlipRight() {
     return Transform(
       transform: Matrix4.identity()
-        ..setEntry(3, 2, 0.001) // perspective
+        ..setEntry(3, 2, 0.0008) // perspective
         ..rotateY(_flipAngleDegRight / 180 * pi),
       alignment: FractionalOffset.centerLeft,
       child: GestureDetector(
         //onTap: () => _incrIndex(),
         child: SizedBox.expand(
-          child: CachedNetworkImage(
-            imageUrl:
-                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                    proofRows[_flipRightIndex]["file"],
-            fit: BoxFit.contain,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
+                      proofRows[_flipRightIndex]["file"],
+              fit: BoxFit.contain,
+              placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation(
+                        Color(0xff303030),
+                      ),
+                    ),
+                  ),
+            ),
           ),
         ),
       ),
@@ -223,8 +254,6 @@ class _AlbumPageState extends State<AlbumPage> {
     //  print('details.delta');
     //  print(details.delta);
 
-    if (!_unlockedFlip) return null;
-
     _offset += details.delta;
 
     if (!_isMoving) {
@@ -247,7 +276,7 @@ class _AlbumPageState extends State<AlbumPage> {
     //   print(_offset.dx);
 
     if (_directionLeft || _index > 2) {
-      _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 2.5) * -1 * 180;
+      _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 1.5) * -1 * 180;
 
       if (!_directionLeft) {
         _flipAngleDeg = 180 + _flipAngleDeg;
@@ -259,13 +288,11 @@ class _AlbumPageState extends State<AlbumPage> {
 
   void _updateAngles() {
     if (_flipAngleDeg < 0) {
-      _unlockedFlip = false;
       _flipAngleDeg = 0;
       //_offset = Offset(0.0, 0.0);
     }
 
     if (_flipAngleDeg > 180) {
-      _unlockedFlip = false;
       _flipAngleDeg = 180;
       //_offset = Offset(0.0, 0.0);
     }
@@ -304,7 +331,6 @@ class _AlbumPageState extends State<AlbumPage> {
     print(details);
     _pageChanged = false;
     _isMoving = false;
-    _unlockedFlip = true;
   }
 
   void _onPanEnd(details) {
@@ -313,7 +339,6 @@ class _AlbumPageState extends State<AlbumPage> {
 
     _pageChanged = false;
     _isMoving = false;
-    _unlockedFlip = true;
 
     if (_flipAngleDeg >= 0 && _flipAngleDeg <= 90) {
       if (!_directionLeft && _index > 2) {
@@ -326,7 +351,7 @@ class _AlbumPageState extends State<AlbumPage> {
     }
 
     _offset = Offset(0.0, 0.0);
-    _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 2.5) * -1 * 180;
+    _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 1.5) * -1 * 180;
 
     _updateIndexes();
   }

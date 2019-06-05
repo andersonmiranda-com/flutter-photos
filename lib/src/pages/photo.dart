@@ -74,7 +74,8 @@ class PhotoPageState extends State<PhotoPage> {
                               placeholder: (context, url) => Center(
                                       child: CircularProgressIndicator(
                                     valueColor: new AlwaysStoppedAnimation(
-                                        Color(0xff303030)),
+                                      Color(0xff303030),
+                                    ),
                                   )),
                               //errorWidget: (context, url, error) => new Icon(Icons.error),
                             ),
@@ -87,8 +88,7 @@ class PhotoPageState extends State<PhotoPage> {
                 onPageChanged: (i) => {
                       setState(() {
                         if (i + widget.index >= widget.proofRows.length) {
-                          _currentSlide =
-                              widget.index - (widget.proofRows.length - i);
+                          _currentSlide = widget.index - (widget.proofRows.length - i);
                         } else {
                           _currentSlide = widget.index + i;
                         }
