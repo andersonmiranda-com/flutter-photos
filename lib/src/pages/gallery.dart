@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:AlboomProof/API.dart';
-import 'package:AlboomProof/pages/photo.dart';
+
+import 'package:AlboomProof/src/providers/API.dart';
+import 'package:AlboomProof/src/pages/photo.dart';
 
 class GalleryPage extends StatefulWidget {
   @override

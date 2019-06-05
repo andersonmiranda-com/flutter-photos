@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import "./pages/gallery.dart";
+import 'package:AlboomProof/src/pages/gallery.dart';
+
 
 void main() => runApp(MyApp());
 
