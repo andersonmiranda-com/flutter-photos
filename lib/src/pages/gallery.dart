@@ -15,7 +15,21 @@ class _GalleryPageState extends State<GalleryPage> {
   Map proofDetails = {};
   bool _loadingInProgress;
 
-  _getProof(unique_id) {
+  void initState() {
+    super.initState();
+    _loadingInProgress = true;
+    _getProof("k78si6");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _buildBody(),
+      backgroundColor: Color(0xff202020),
+    );
+  }
+
+  void _getProof(unique_id) {
     API.getProof(unique_id).then((response) {
       var proofData = json.decode(response.body);
       setState(() {
@@ -28,16 +42,88 @@ class _GalleryPageState extends State<GalleryPage> {
     });
   }
 
-  void initState() {
-    super.initState();
-    _loadingInProgress = true;
-    _getProof("k78si6");
-  }
-
   void _setSelected(int i, String state) {
     setState(() {
       proofRows[i]["taken"] = state;
     });
+  }
+
+  Widget _buildBody() {
+    if (_loadingInProgress) {
+      return new Center(
+        child: new CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
+        ),
+      );
+    } else {
+      return new NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              backgroundColor: Colors.black54,
+              flexibleSpace: FlexibleSpaceBar(
+                  title: Text(proofDetails["name"] != null ? proofDetails["name"] : ""),
+                  background: proofDetails["name"] != null
+                      ? Stack(
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
+                                        proofDetails["cover"],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  gradient: LinearGradient(
+                                      begin: FractionalOffset.topCenter,
+                                      end: FractionalOffset.bottomCenter,
+                                      colors: [
+                                        Color(0x00000000),
+                                        Color(0x00000000),
+                                        Color(0x20000000),
+                                        Color(0x90000000),
+                                      ],
+                                      stops: [
+                                        0.0,
+                                        0.5,
+                                        0.7,
+                                        1.0
+                                      ])),
+                            )
+                          ],
+                        )
+                      : Container(),
+                  centerTitle: false),
+            ),
+          ];
+        },
+        body: Center(child: _buildProofGrid()),
+      );
+    }
+  }
+
+  Widget _buildProofGrid() {
+    Widget proofGrid;
+    if (proofRows.length > 0) {
+      proofGrid = OrientationBuilder(builder: (context, orientation) {
+        int columnCount = (orientation == Orientation.portrait) ? 4 : 8;
+        return GridView.builder(
+            padding: EdgeInsets.only(top: 0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columnCount),
+            itemBuilder: _buildProofItem,
+            itemCount: proofRows.length);
+      });
+    } else {
+      proofGrid = Container();
+    }
+    return proofGrid;
   }
 
   Widget _buildProofItem(BuildContext context, int index) {
@@ -110,91 +196,6 @@ class _GalleryPageState extends State<GalleryPage> {
         ),
       ],
     );
-  }
-
-  _buildProofGrid() {
-    Widget proofGrid;
-    if (proofRows.length > 0) {
-      proofGrid = OrientationBuilder(builder: (context, orientation) {
-        int columnCount = (orientation == Orientation.portrait) ? 4 : 8;
-        return GridView.builder(
-            padding: EdgeInsets.only(top: 0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: columnCount),
-            itemBuilder: _buildProofItem,
-            itemCount: proofRows.length);
-      });
-    } else {
-      proofGrid = Container();
-    }
-    return proofGrid;
-  }
-
-  Widget _buildBody() {
-    if (_loadingInProgress) {
-      return new Center(
-        child: new CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
-        ),
-      );
-    } else {
-      return new NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              backgroundColor: Colors.black54,
-              flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                      proofDetails["name"] != null ? proofDetails["name"] : ""),
-                  background: proofDetails["name"] != null
-                      ? Stack(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
-                                        proofDetails["cover"],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  gradient: LinearGradient(
-                                      begin: FractionalOffset.topCenter,
-                                      end: FractionalOffset.bottomCenter,
-                                      colors: [
-                                        Color(0x00000000),
-                                        Color(0x00000000),
-                                        Color(0x20000000),
-                                        Color(0x90000000),
-                                      ],
-                                      stops: [
-                                        0.0,
-                                        0.5,
-                                        0.7,
-                                        1.0
-                                      ])),
-                            )
-                          ],
-                        )
-                      : Container(),
-                  centerTitle: false),
-            ),
-          ];
-        },
-        body: Center(child: _buildProofGrid()),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody(), backgroundColor: Color(0xff202020));
   }
 }
 

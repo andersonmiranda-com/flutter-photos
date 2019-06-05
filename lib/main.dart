@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:AlboomProof/src/pages/gallery.dart';
+//import 'package:AlboomProof/src/pages/gallery.dart';
+import 'package:AlboomProof/src/pages/album.dart';
 
 
 void main() => runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
             title: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
 //            body1: TextStyle(fontSize: 14.0),
           )),
-      home: GalleryPage(),
+      home: AlbumPage(),
     );
   }
 }
