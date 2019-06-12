@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:AlboomProof/src/providers/API.dart';
+import 'package:AlboomPhotos/src/providers/API.dart';
 
 class AlbumPage extends StatefulWidget {
   AlbumPage({Key key}) : super(key: key);
@@ -45,7 +45,23 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(),
+      body: Stack(
+        children: <Widget>[
+          _buildBody(),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: SafeArea(
+                    child: BackButton(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       backgroundColor: Color(0xff202020),
     );
   }
@@ -60,12 +76,6 @@ class _AlbumPageState extends State<AlbumPage> {
       });
       print(proofDetails);
       print(proofRows);
-    });
-  }
-
-  void _setSelected(int i, String state) {
-    setState(() {
-      proofRows[i]["taken"] = state;
     });
   }
 

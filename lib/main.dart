@@ -1,8 +1,7 @@
+import 'package:AlboomPhotos/src/pages/start_page.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:AlboomProof/src/pages/gallery.dart';
-import 'package:AlboomProof/src/pages/album.dart';
-
+import 'package:AlboomPhotos/routes/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,13 +14,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.dark,
           fontFamily: 'Gotham',
-          primarySwatch: Colors.blue,
+          accentColor: Color(0xff00B4AA),
           backgroundColor: Color(0xff202020),
           textTheme: TextTheme(
             title: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
 //            body1: TextStyle(fontSize: 14.0),
           )),
-      home: AlbumPage(),
+      initialRoute: '/',
+      routes: getApplicationRoutes(),
+      onGenerateRoute: (RouteSettings settings) {
+        //catchall - rota que não tem nomes definidos
+        return MaterialPageRoute(builder: (BuildContext context) => StartPage());
+      },
     );
   }
 }
