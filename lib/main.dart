@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           fontFamily: 'Gotham',
           accentColor: Color(0xff00B4AA),
-          backgroundColor: Color(0xff202020),
+          backgroundColor: Color(0xff282828),
           textTheme: TextTheme(
             title: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
 //            body1: TextStyle(fontSize: 14.0),

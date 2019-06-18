@@ -42,9 +42,9 @@ class PhotoPageState extends State<PhotoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff202020),
-        body: Container(
-            child: Stack(
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: Container(
+        child: Stack(
           children: <Widget>[
             CarouselSlider(
                 height: MediaQuery.of(context).size.height - 10,
@@ -131,6 +131,8 @@ class PhotoPageState extends State<PhotoPage> {
               ],
             ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }

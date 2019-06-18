@@ -62,7 +62,7 @@ class _AlbumPageState extends State<AlbumPage> {
           ),
         ],
       ),
-      backgroundColor: Color(0xff202020),
+      backgroundColor: Theme.of(context).backgroundColor,
     );
   }
 

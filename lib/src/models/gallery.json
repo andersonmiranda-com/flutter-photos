@@ -1,0 +1,53 @@
+{
+    "collection": {
+        "id": 2662,
+        "name": "4 ANOS LORENA ",
+        "message": "Bem-vindo(a) ao sistema de visualização e aprovação de fotos.",
+        "downloadable": false,
+        "single_download": false,
+        "commentable": true,
+        "shareable": false,
+        "description": null,
+        "photographed_at": "2018-04-14",
+        "status": "review",
+        "selection_limit_date": "2019-03-21",
+        "selection_limit": 100,
+        "friendly_url": "4_anos_lorena",
+        "selection_quantity_type": "exactly",
+        "cover": "http://s3.amazonaws.com/proof.alboompro.com/images/599/collections/2662/97da6112098f73a31f195a7c__dsc6093__2_.jpg",
+        "exhibition_size": { "width": 1920, "height": 1920 },
+        "owner": {
+            "name": "Felipe Paludetto",
+            "logo_text": "Felipe Paludetto",
+            "logo_type": "text",
+            "logo": null
+        },
+        "priv": false,
+        "photos": [
+            {
+                "id": 765680,
+                "url": "http://s3.amazonaws.com/proof.alboompro.com/images/599/collections/2662/62ab4ad854ad37a69cba68ce__dsc6044__2_.jpg",
+                "name": "_dsc6044 (2).jpg",
+                "height": 1282,
+                "width": 1920,
+                "position": 0,
+                "selected": true,
+                "owner_favorite": false,
+                "comments": []
+            },
+            {
+                "id": 765680,
+                "url": "http://s3.amazonaws.com/proof.alboompro.com/images/599/collections/2662/62ab4ad854ad37a69cba68ce__dsc6044__2_.jpg",
+                "name": "_dsc6044 (2).jpg",
+                "height": 1282,
+                "width": 1920,
+                "position": 0,
+                "selected": true,
+                "owner_favorite": false,
+                "comments": []
+            }
+        ],
+        "total_photos": 283,
+        "total_selections": 100
+    }
+}
