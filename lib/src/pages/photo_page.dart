@@ -1,3 +1,5 @@
+import 'package:AlboomPhotos/src/models/collection_model.dart';
+import 'package:AlboomPhotos/src/providers/collections_provider.dart';
 import "package:flutter/material.dart";
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -5,12 +7,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 
 class PhotoPage extends StatefulWidget {
-  final List proofRows;
+  final Collection _collection;
   final int index;
-  final String urlPrefix;
   final Function setSelect;
 
-  PhotoPage(this.proofRows, this.index, this.urlPrefix, this.setSelect);
+  PhotoPage(this._collection, this.index, this.setSelect);
 
   PhotoPageState createState() => PhotoPageState();
 }
@@ -25,18 +26,6 @@ class PhotoPageState extends State<PhotoPage> {
 
   void _setSelect(i) {
     print(i);
-    String finalState;
-
-    if (widget.proofRows[_currentSlide]["taken"] == "1") {
-      finalState = "0";
-    } else {
-      finalState = "1";
-    }
-
-    widget.setSelect(i, finalState);
-    setState(() {
-      widget.proofRows[_currentSlide]["taken"] = finalState;
-    });
   }
 
   @override
@@ -51,7 +40,7 @@ class PhotoPageState extends State<PhotoPage> {
                 aspectRatio: 1.0,
                 initialPage: widget.index,
                 enableInfiniteScroll: false,
-                items: widget.proofRows.map((photo) {
+                items: widget._collection.photos.map((photo) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -67,9 +56,8 @@ class PhotoPageState extends State<PhotoPage> {
                           panLimit: 1.0,
                           child: Container(
                             child: CachedNetworkImage(
-                              imageUrl:
-                                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/" +
-                                      photo["file"],
+                              imageUrl: CollectionProvider.getReducedImage(photo.url,
+                                  width: 800, height: 800),
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
                                       child: CircularProgressIndicator(
@@ -87,8 +75,8 @@ class PhotoPageState extends State<PhotoPage> {
                 }).toList(),
                 onPageChanged: (i) => {
                       setState(() {
-                        if (i + widget.index >= widget.proofRows.length) {
-                          _currentSlide = widget.index - (widget.proofRows.length - i);
+                        if (i + widget.index >= widget._collection.photos.length) {
+                          _currentSlide = widget.index - (widget._collection.photos.length - i);
                         } else {
                           _currentSlide = widget.index + i;
                         }
@@ -104,7 +92,7 @@ class PhotoPageState extends State<PhotoPage> {
                     ),
                   ),
                 ),
-                Container(
+                /*                 Container(
                   padding: EdgeInsets.all(15.0),
                   child: Align(
                     alignment: Alignment.topRight,
@@ -113,7 +101,7 @@ class PhotoPageState extends State<PhotoPage> {
                         onTap: () {
                           _setSelect(_currentSlide);
                         },
-                        child: widget.proofRows[_currentSlide]["taken"] == "1"
+                        child: widget._collection.photos[_currentSlide]["taken"] == "1"
                             ? Icon(
                                 Icons.check_circle,
                                 color: Colors.amber,
@@ -128,6 +116,8 @@ class PhotoPageState extends State<PhotoPage> {
                     ),
                   ),
                 ),
+
+*/
               ],
             ),
           ],

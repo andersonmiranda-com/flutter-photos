@@ -16,26 +16,21 @@ class _GalleryPageState extends State<GalleryPage> {
 
   void initState() {
     super.initState();
-    _loadingInProgress = true;
-    _getCollection("se1e085");
+//    _loadingInProgress = true;
+//    _getCollection("se1e085");
   }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _collection = ModalRoute.of(context).settings.arguments;
+    });
+    //print(_collection.photos);
+
     return Scaffold(
       body: _buildBody(),
       backgroundColor: Theme.of(context).backgroundColor,
     );
-  }
-
-  void _getCollection(uniqueId) {
-    CollectionProvider.getCollection(uniqueId).then((response) {
-      setState(() {
-        _collection = response;
-        _loadingInProgress = false;
-      });
-      print(_collection.cover);
-    });
   }
 
   void _setSelected(int i, String state) {
@@ -45,22 +40,14 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   Widget _buildBody() {
-    if (_loadingInProgress) {
-      return new Center(
-        child: new CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
-        ),
-      );
-    } else {
-      return new NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            _buildAppBar(),
-          ];
-        },
-        body: Center(child: _buildProofGrid()),
-      );
-    }
+    return new NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          _buildAppBar(),
+        ];
+      },
+      body: Center(child: _buildProofGrid()),
+    );
   }
 
   Widget _buildAppBar() {
@@ -110,7 +97,7 @@ class _GalleryPageState extends State<GalleryPage> {
 
   Widget _buildProofGrid() {
     Widget proofGrid;
-    if (_collection.photos.length > 0) {
+    if (_collection.photos != null && _collection.photos.length > 0) {
       proofGrid = OrientationBuilder(builder: (context, orientation) {
         int columnCount = (orientation == Orientation.portrait) ? 4 : 8;
         return GridView.builder(
@@ -131,11 +118,7 @@ class _GalleryPageState extends State<GalleryPage> {
         Navigator.push<bool>(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => PhotoPage(
-                  _collection.photos,
-                  index,
-                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/723/",
-                  _setSelected),
+              builder: (BuildContext context) => PhotoPage(_collection, index, _setSelected),
             ));
       },
       child: Container(

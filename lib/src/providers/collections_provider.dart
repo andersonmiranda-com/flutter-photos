@@ -11,10 +11,19 @@ class CollectionProvider {
   bool _loading = false;
 
   static Future<Collection> getCollection(collectionId) async {
+//    print("collectionId");
+//    print(collectionId);
+
     final resp = await http.get('https://proof-api.alboompro.com/api/app/proofs/' + collectionId);
     final decodedData = json.decode(resp.body);
-    final collection = new Collection.fromJson(decodedData["collection"]);
-    return collection;
+//    print(decodedData);
+
+    if (decodedData["success"] == true) {
+      final collection = new Collection.fromJson(decodedData["collection"]);
+      return collection;
+    } else {
+      return new Collection();
+    }
   }
 
   static String getReducedImage(String imageUrl, {int width: 150, int height: 150}) {
