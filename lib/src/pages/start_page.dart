@@ -3,6 +3,7 @@ import 'package:AlboomPhotos/src/models/collection_model.dart';
 import 'package:AlboomPhotos/src/providers/collections_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class StartPage extends StatefulWidget {
   StartPage({Key key}) : super(key: key);
@@ -35,6 +36,17 @@ class _StartPageState extends State<StartPage> {
                   Expanded(
                     child: Container(),
                   ),
+                  SizedBox(
+                    height: 70.0,
+                    width: 220.0,
+                    child: Image.asset(
+                      "assets/logo.png",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
                   Container(
                     padding: EdgeInsets.all(15.0),
                     child: Text("Entre o código da galeria"),
@@ -58,9 +70,13 @@ class _StartPageState extends State<StartPage> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: RaisedButton(
-                          child: Text("View"),
-                          color: Theme.of(context).accentColor,
+                        child: MaterialButton(
+                          height: 46.0,
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                          ),
+                          child: Text("Ver"),
+                          color: Theme.of(context).primaryColor,
                           onPressed: () {
                             _checkGalleryId(_galleryId);
                           },
@@ -124,7 +140,7 @@ class _StartPageState extends State<StartPage> {
     if (_loadingInProgress) {
       return Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Color(0xff404040)),
+          valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
         ),
       );
     } else {

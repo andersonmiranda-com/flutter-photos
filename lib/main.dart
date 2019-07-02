@@ -12,10 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          brightness: Brightness.dark,
+          //brightness: Brightness.light,
           fontFamily: 'Gotham',
-          accentColor: Color(0xff00B4AA),
-          backgroundColor: Color(0xff282828),
+          primaryColor: Color(0xff71bf97),
+          accentColor: Color(0xfff07069),
+          //primaryColor: Colors.green[200],
+          backgroundColor: Colors.white,
           textTheme: TextTheme(
             title: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
 //            body1: TextStyle(fontSize: 14.0),

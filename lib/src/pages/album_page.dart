@@ -66,8 +66,8 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
-  void _getProof(unique_id) {
-    API.getAlbum(unique_id).then((response) {
+  void _getProof(uniqueId) {
+    API.getAlbum(uniqueId).then((response) {
       var proofData = json.decode(response.body);
       setState(() {
         proofDetails = proofData["proof"];

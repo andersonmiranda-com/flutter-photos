@@ -55,9 +55,15 @@ class _GalleryPageState extends State<GalleryPage> {
       expandedHeight: 200.0,
       floating: false,
       pinned: true,
+      iconTheme: IconThemeData(
+        color: Colors.white, //change your color here
+      ),
       backgroundColor: Colors.black54,
       flexibleSpace: FlexibleSpaceBar(
-          title: Text(_collection.name != null ? _collection.name : ""),
+          title: Text(
+            _collection.name != null ? _collection.name : "",
+            style: TextStyle(color: Colors.white, fontSize: 16.0),
+          ),
           background: _collection.name != null
               ? Stack(
                   children: <Widget>[

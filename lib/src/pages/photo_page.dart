@@ -60,11 +60,11 @@ class PhotoPageState extends State<PhotoPage> {
                                   width: 800, height: 800),
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator(
-                                    valueColor: new AlwaysStoppedAnimation(
-                                      Color(0xff303030),
+                                    child: CircularProgressIndicator(
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Theme.of(context).accentColor),
                                     ),
-                                  )),
+                                  ),
                               //errorWidget: (context, url, error) => new Icon(Icons.error),
                             ),
                           ),
