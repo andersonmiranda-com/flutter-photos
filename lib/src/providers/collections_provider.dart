@@ -19,8 +19,21 @@ class CollectionProvider {
 //    print(decodedData);
 
     if (decodedData["success"] == true) {
-      final collection = new Collection.fromJson(decodedData["collection"]);
-      return collection;
+      if (decodedData["album"] != null) {
+        final collection = new Collection.fromJson(decodedData["album"]);
+        collection.type = "album";
+        print("Album");
+        return collection;
+      } else if (decodedData["collection"] != null) {
+        final collection = new Collection.fromJson(decodedData["collection"]);
+        print("Collection");
+        collection.type = "photos";
+        return collection;
+      } else {
+        return new Collection();
+      }
+      // final collection = new Collection.fromJson(decodedData["collection"]);
+
     } else {
       return new Collection();
     }

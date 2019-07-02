@@ -1,0 +1,44 @@
+{
+    "album": {
+        "id": 26951,
+        "name": "album1",
+        "message": "Bienvenido(a) al sistema de visualización y aprobación de álbumes",
+        "status": "login_sent",
+        "photographed_at": "2019-07-02",
+        "commentable": true,
+        "diagramation": "pages",
+        "shareable": true,
+        "description": null,
+        "approval_limit_date": null,
+        "friendly_url": "album1",
+        "cover": "http://s3.amazonaws.com/proof.alboompro.com/images/685/albums/26951/324c423c845ed8f26d285075_0003.jpg",
+        "priv": false,
+        "owner": {
+            "name": "Anderson Miranda",
+            "logo_text": "Anderson Miranda",
+            "logo_type": "text",
+            "logo": null
+        },
+        "photos": [
+            {
+                "album_image_id": 1062730,
+                "id": 38835354,
+                "url": "http://s3.amazonaws.com/proof.alboompro.com/images/685/albums/26951/324c423c845ed8f26d285075_0003.jpg",
+                "name": "0003.jpg",
+                "height": 800,
+                "width": 573,
+                "position": 1
+            },
+            {
+                "album_image_id": 1062939,
+                "id": 38846497,
+                "url": "http://s3.amazonaws.com/proof.alboompro.com/images/685/albums/26951/9711ef8e1fd6e2a99a116c46_0080.jpg",
+                "name": "0080.jpg",
+                "height": 800,
+                "width": 573,
+                "position": 33
+            }
+        ]
+    },
+    "success": true
+}

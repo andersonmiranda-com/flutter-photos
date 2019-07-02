@@ -54,9 +54,11 @@ class _StartPageState extends State<StartPage> {
                   TextField(
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Código da galeria',
-                        helperText: _errorText),
+                      border: OutlineInputBorder(),
+                      hintText: 'Código da galeria',
+                      helperText: _errorText,
+                      helperStyle: TextStyle(color: Colors.red[900]),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         _galleryId = value;
@@ -126,8 +128,24 @@ class _StartPageState extends State<StartPage> {
       setState(() {
         _loadingInProgress = false;
       });
+
       if (_collection.id != null) {
-        Navigator.pushNamed(context, 'gallery', arguments: _collection);
+        if (_collection.priv == true) {
+          setState(() {
+            _errorText = "Galeria não dispnível";
+          });
+          return;
+        }
+
+        if (_collection.type == "album") {
+          setState(() {
+            _errorText = "Visualização de álbuns ainda não disponivel";
+          });
+        }
+
+        if (_collection.type == "photos") {
+          Navigator.pushNamed(context, 'gallery', arguments: _collection);
+        }
       } else {
         setState(() {
           _errorText = "Galeria Inválida";

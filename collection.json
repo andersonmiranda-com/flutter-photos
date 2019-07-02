@@ -1,0 +1,54 @@
+{
+    "collection": {
+        "id": 32751,
+        "name": "Mariana Trash The Dress",
+        "message": "Bienvenido(a) al sistema de visualización y selección de fotos.",
+        "downloadable": false,
+        "single_download": false,
+        "commentable": true,
+        "shareable": false,
+        "description": null,
+        "photographed_at": "2018-10-27",
+        "status": "login_sent",
+        "selection_limit_date": null,
+        "selection_limit": null,
+        "friendly_url": "ttd-mariana",
+        "selection_quantity_type": "unlimited",
+        "cover": "http://s3.amazonaws.com/proof.alboompro.com/images/685/collections/32751/f0f5bf1b87350d069fd30505_1074-0001.jpg",
+        "exhibition_size": { "width": 1920, "height": 1920 },
+        "owner": {
+            "name": "Anderson Miranda",
+            "logo_text": "Anderson Miranda",
+            "logo_type": "text",
+            "logo": null
+        },
+        "priv": false,
+        "photos": [
+            {
+                "id": 38222794,
+                "url": "http://s3.amazonaws.com/proof.alboompro.com/images/685/collections/32751/f0f5bf1b87350d069fd30505_1074-0001.jpg",
+                "name": "1074-0001.jpg",
+                "height": 1280,
+                "width": 1920,
+                "position": 1,
+                "selected": false,
+                "owner_favorite": false,
+                "comments": []
+            },
+            {
+                "id": 38222795,
+                "url": "http://s3.amazonaws.com/proof.alboompro.com/images/685/collections/32751/30ef2653801dce6cc340790d_1074-0002.jpg",
+                "name": "1074-0002.jpg",
+                "height": 1280,
+                "width": 1920,
+                "position": 2,
+                "selected": false,
+                "owner_favorite": false,
+                "comments": []
+            }
+        ],
+        "total_photos": 297,
+        "total_selections": 0
+    },
+    "success": true
+}

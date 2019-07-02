@@ -107,10 +107,11 @@ class _GalleryPageState extends State<GalleryPage> {
       proofGrid = OrientationBuilder(builder: (context, orientation) {
         int columnCount = (orientation == Orientation.portrait) ? 4 : 8;
         return GridView.builder(
-            padding: EdgeInsets.only(top: 0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columnCount),
-            itemBuilder: _buildProofItem,
-            itemCount: _collection.photos.length);
+          padding: EdgeInsets.only(top: 0),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columnCount),
+          itemBuilder: _buildProofItem,
+          itemCount: _collection.photos.length,
+        );
       });
     } else {
       proofGrid = Container();
@@ -134,10 +135,7 @@ class _GalleryPageState extends State<GalleryPage> {
         child: CachedNetworkImage(
           imageUrl: CollectionProvider.getReducedImage(_collection.photos[index].url),
           fit: BoxFit.cover,
-          // placeholder: (context, url) => Center(
-          //         child: CircularProgressIndicator(
-          //       valueColor: new AlwaysStoppedAnimation(Color(0xff303030)),
-          //     )),
+          placeholder: (context, url) => Center(child: Image.asset("assets/loading.png")),
           //errorWidget: (context, url, error) => new Icon(Icons.error),
         ),
       ),

@@ -19,48 +19,49 @@ class Collection {
   int id;
   String name;
   String message;
-  bool downloadable;
-  bool singleDownload;
-  bool commentable;
+//  bool downloadable;
+//  bool singleDownload;
+//  bool commentable;
   bool shareable;
   dynamic description;
   DateTime photographedAt;
   String status;
-  DateTime selectionLimitDate;
-  int selectionLimit;
-  String friendlyUrl;
-  String selectionQuantityType;
+//  DateTime selectionLimitDate;
+//  int selectionLimit;
+//  String friendlyUrl;
+//  String selectionQuantityType;
   String cover;
-  ExhibitionSize exhibitionSize;
+//  ExhibitionSize exhibitionSize;
   Owner owner;
   bool priv;
   List<Photo> photos;
-  int totalPhotos;
-  int totalSelections;
+  String type;
+//  int totalPhotos;
+//  int totalSelections;
 
-  Collection({
-    this.id,
-    this.name,
-    this.message,
-    this.downloadable,
-    this.singleDownload,
-    this.commentable,
-    this.shareable,
-    this.description,
-    this.photographedAt,
-    this.status,
+  Collection(
+      {this.id,
+      this.name,
+      this.message,
+//    this.downloadable,
+//    this.singleDownload,
+//    this.commentable,
+      this.shareable,
+      this.description,
+      this.photographedAt,
+      this.status,
 //    this.selectionLimitDate,
 //    this.selectionLimit,
 //    this.friendlyUrl,
 //    this.selectionQuantityType,
-    this.cover,
-    this.exhibitionSize,
-    this.owner,
-    this.priv,
-    this.photos,
-    this.totalPhotos,
-    this.totalSelections,
-  });
+      this.cover,
+//      this.exhibitionSize,
+      this.owner,
+      this.priv,
+      this.photos,
+      //  this.totalPhotos,
+      //  this.totalSelections,
+      this.type});
 
   factory Collection.fromRawJson(String str) => Collection.fromJson(json.decode(str));
 
@@ -68,11 +69,12 @@ class Collection {
 
   factory Collection.fromJson(Map<String, dynamic> json) => new Collection(
         id: json["id"],
+        type: json["type"],
         name: json["name"],
         message: json["message"],
-        downloadable: json["downloadable"],
-        singleDownload: json["single_download"],
-        commentable: json["commentable"],
+        //downloadable: json["downloadable"],
+        //singleDownload: json["single_download"],
+        //commentable: json["commentable"],
         shareable: json["shareable"],
         description: json["description"],
         photographedAt: DateTime.parse(json["photographed_at"]),
@@ -82,21 +84,22 @@ class Collection {
         //friendlyUrl: json["friendly_url"],
         //selectionQuantityType: json["selection_quantity_type"],
         cover: json["cover"],
-        exhibitionSize: ExhibitionSize.fromJson(json["exhibition_size"]),
+        //exhibitionSize: ExhibitionSize.fromJson(json["exhibition_size"]),
         owner: Owner.fromJson(json["owner"]),
         priv: json["priv"],
         photos: new List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
-        totalPhotos: json["total_photos"],
+        //totalPhotos: json["total_photos"],
         //totalSelections: json["total_selections"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "type": type,
         "name": name,
         "message": message,
-        "downloadable": downloadable,
-        "single_download": singleDownload,
-        "commentable": commentable,
+        //"downloadable": downloadable,
+        //"single_download": singleDownload,
+        //"commentable": commentable,
         "shareable": shareable,
         "description": description,
         "photographed_at":
@@ -108,15 +111,16 @@ class Collection {
 //        "friendly_url": friendlyUrl,
 //        "selection_quantity_type": selectionQuantityType,
         "cover": cover,
-        "exhibition_size": exhibitionSize.toJson(),
+//        "exhibition_size": exhibitionSize.toJson(),
         "owner": owner.toJson(),
         "priv": priv,
         "photos": new List<dynamic>.from(photos.map((x) => x.toJson())),
-        "total_photos": totalPhotos,
-        "total_selections": totalSelections,
+        //"total_photos": totalPhotos,
+        //"total_selections": totalSelections,
       };
 }
 
+/*
 class ExhibitionSize {
   int width;
   int height;
@@ -140,6 +144,7 @@ class ExhibitionSize {
         "height": height,
       };
 }
+*/
 
 class Owner {
   String name;
@@ -180,9 +185,9 @@ class Photo {
   int height;
   int width;
   int position;
-  bool selected;
-  bool ownerFavorite;
-  List<dynamic> comments;
+//  bool selected;
+//  bool ownerFavorite;
+//  List<dynamic> comments;
 
   Photo({
     this.id,
@@ -191,9 +196,9 @@ class Photo {
     this.height,
     this.width,
     this.position,
-    this.selected,
-    this.ownerFavorite,
-    this.comments,
+    //  this.selected,
+    //  this.ownerFavorite,
+    //  this.comments,
   });
 
   factory Photo.fromRawJson(String str) => Photo.fromJson(json.decode(str));
@@ -207,9 +212,9 @@ class Photo {
         height: json["height"],
         width: json["width"],
         position: json["position"],
-        selected: json["selected"],
-        ownerFavorite: json["owner_favorite"],
-        comments: new List<dynamic>.from(json["comments"].map((x) => x)),
+        //    selected: json["selected"],
+        //    ownerFavorite: json["owner_favorite"],
+        //    comments: new List<dynamic>.from(json["comments"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -219,8 +224,8 @@ class Photo {
         "height": height,
         "width": width,
         "position": position,
-        "selected": selected,
-        "owner_favorite": ownerFavorite,
-        "comments": new List<dynamic>.from(comments.map((x) => x)),
+        //  "selected": selected,
+        //  "owner_favorite": ownerFavorite,
+        //  "comments": new List<dynamic>.from(comments.map((x) => x)),
       };
 }
