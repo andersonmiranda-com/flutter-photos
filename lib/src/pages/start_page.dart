@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:AlboomPhotos/src/bloc/collections_bloc.dart';
 import 'package:AlboomPhotos/src/models/collection_model.dart';
 import 'package:AlboomPhotos/src/providers/collections_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 
 class StartPage extends StatefulWidget {
@@ -12,11 +12,12 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  final collectionsBloc = new CollectionsBloc();
+
   String _galleryId = "";
-  List<String> _galleryList = [];
   Collection _collection;
   bool _loadingInProgress = false;
-  String _errorText = null;
+  String _errorText;
 
   void initState() {
     super.initState();
@@ -100,17 +101,6 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  _setGalleryId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('galleryList', [_galleryId, _galleryId]);
-  }
-
-  _getGalleryId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _galleryList = prefs.getStringList('galleryList') ?? [];
-    //print(_galleryList);
-  }
-
   void _checkGalleryId(uniqueId) {
     if (uniqueId == "") {
       setState(() {
@@ -132,10 +122,12 @@ class _StartPageState extends State<StartPage> {
       if (_collection.id != null) {
         if (_collection.priv == true) {
           setState(() {
-            _errorText = "Galeria não dispnível";
+            _errorText = "Galeria não disponível";
           });
           return;
         }
+
+        collectionsBloc.addCollection(_collection);
 
         if (_collection.type == "album") {
           setState(() {

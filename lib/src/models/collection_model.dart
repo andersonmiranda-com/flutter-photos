@@ -17,6 +17,7 @@ class Collections {
 
 class Collection {
   int id;
+  String type;
   String name;
   String message;
 //  bool downloadable;
@@ -24,7 +25,7 @@ class Collection {
 //  bool commentable;
   bool shareable;
   dynamic description;
-  DateTime photographedAt;
+  String photographedAt;
   String status;
 //  DateTime selectionLimitDate;
 //  int selectionLimit;
@@ -32,15 +33,18 @@ class Collection {
 //  String selectionQuantityType;
   String cover;
 //  ExhibitionSize exhibitionSize;
-  Owner owner;
+  String ownerName;
+  String ownerLogoText;
+  String ownerLogoType;
+  String ownerLogo;
   bool priv;
   List<Photo> photos;
-  String type;
 //  int totalPhotos;
 //  int totalSelections;
 
   Collection(
       {this.id,
+      this.type,
       this.name,
       this.message,
 //    this.downloadable,
@@ -56,95 +60,113 @@ class Collection {
 //    this.selectionQuantityType,
       this.cover,
 //      this.exhibitionSize,
-      this.owner,
+      this.ownerName,
+      this.ownerLogoText,
+      this.ownerLogoType,
+      this.ownerLogo,
       this.priv,
-      this.photos,
+      this.photos
       //  this.totalPhotos,
       //  this.totalSelections,
-      this.type});
+      });
 
   factory Collection.fromRawJson(String str) => Collection.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Collection.fromJson(Map<String, dynamic> json) => new Collection(
-        id: json["id"],
-        type: json["type"],
-        name: json["name"],
-        message: json["message"],
-        //downloadable: json["downloadable"],
-        //singleDownload: json["single_download"],
-        //commentable: json["commentable"],
-        shareable: json["shareable"],
-        description: json["description"],
-        photographedAt: DateTime.parse(json["photographed_at"]),
-        status: json["status"],
-        //selectionLimitDate: DateTime.parse(json["selection_limit_date"]),
-        //selectionLimit: json["selection_limit"],
-        //friendlyUrl: json["friendly_url"],
-        //selectionQuantityType: json["selection_quantity_type"],
-        cover: json["cover"],
-        //exhibitionSize: ExhibitionSize.fromJson(json["exhibition_size"]),
-        owner: Owner.fromJson(json["owner"]),
-        priv: json["priv"],
-        photos: new List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
-        //totalPhotos: json["total_photos"],
-        //totalSelections: json["total_selections"],
-      );
+  factory Collection.fromJson(Map<String, dynamic> json) {
+    final _owner = Owner.fromJson(json["owner"]);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "type": type,
-        "name": name,
-        "message": message,
-        //"downloadable": downloadable,
-        //"single_download": singleDownload,
-        //"commentable": commentable,
-        "shareable": shareable,
-        "description": description,
-        "photographed_at":
-            "${photographedAt.year.toString().padLeft(4, '0')}-${photographedAt.month.toString().padLeft(2, '0')}-${photographedAt.day.toString().padLeft(2, '0')}",
-        "status": status,
+    return new Collection(
+      id: json["id"],
+      type: json["type"],
+      name: json["name"],
+      message: json["message"],
+      //downloadable: json["downloadable"],
+      //singleDownload: json["single_download"],
+      //commentable: json["commentable"],
+      shareable: json["shareable"],
+      description: json["description"],
+      photographedAt: json["photographed_at"],
+      status: json["status"],
+      //selectionLimitDate: DateTime.parse(json["selection_limit_date"]),
+      //selectionLimit: json["selection_limit"],
+      //friendlyUrl: json["friendly_url"],
+      //selectionQuantityType: json["selection_quantity_type"],
+      cover: json["cover"],
+      //exhibitionSize: ExhibitionSize.fromJson(json["exhibition_size"]),
+      ownerName: _owner.name,
+      ownerLogoText: _owner.logoText,
+      ownerLogoType: _owner.logoType,
+      ownerLogo: _owner.logo,
+      priv: json["priv"],
+      photos: new List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
+      //totalPhotos: json["total_photos"],
+      //totalSelections: json["total_selections"],
+    );
+  }
+
+  factory Collection.fromJsonDB(Map<String, dynamic> json) {
+    return new Collection(
+      id: json["id"],
+      type: json["type"],
+      name: json["name"],
+      message: json["message"],
+      //downloadable: json["downloadable"],
+      //singleDownload: json["single_download"],
+      //commentable: json["commentable"],
+      shareable: json["shareable"].toLowerCase() == 'true',
+      description: json["description"],
+      photographedAt: json["photographed_at"],
+      status: json["status"],
+      //selectionLimitDate: DateTime.parse(json["selection_limit_date"]),
+      //selectionLimit: json["selection_limit"],
+      //friendlyUrl: json["friendly_url"],
+      //selectionQuantityType: json["selection_quantity_type"],
+      cover: json["cover"],
+      //exhibitionSize: ExhibitionSize.fromJson(json["exhibition_size"]),
+      ownerName: json["ownerName"],
+      ownerLogoText: json["ownerLogoText"],
+      ownerLogoType: json["ownerLogoType"],
+      ownerLogo: json["ownerLogo"],
+      priv: json["priv"].toLowerCase() == 'true',
+      //photos: new List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
+      //totalPhotos: json["total_photos"],
+      //totalSelections: json["total_selections"],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final _onwer = new Owner(
+        name: ownerName, logoText: ownerLogoText, logoType: ownerLogoType, logo: ownerLogo);
+
+    return {
+      "id": id,
+      "type": type,
+      "name": name,
+      "message": message,
+      //"downloadable": downloadable,
+      //"single_download": singleDownload,
+      //"commentable": commentable,
+      "shareable": shareable,
+      "description": description,
+      "photographed_at": photographedAt,
+      "status": status,
 //        "selection_limit_date":
 //            "${selectionLimitDate.year.toString().padLeft(4, '0')}-${selectionLimitDate.month.toString().padLeft(2, '0')}-${selectionLimitDate.day.toString().padLeft(2, '0')}",
 //        "selection_limit": selectionLimit,
 //        "friendly_url": friendlyUrl,
 //        "selection_quantity_type": selectionQuantityType,
-        "cover": cover,
+      "cover": cover,
 //        "exhibition_size": exhibitionSize.toJson(),
-        "owner": owner.toJson(),
-        "priv": priv,
-        "photos": new List<dynamic>.from(photos.map((x) => x.toJson())),
-        //"total_photos": totalPhotos,
-        //"total_selections": totalSelections,
-      };
+      "owner": _onwer.toJson(),
+      "priv": priv,
+      "photos": new List<dynamic>.from(photos.map((x) => x.toJson())),
+      //"total_photos": totalPhotos,
+      //"total_selections": totalSelections,
+    };
+  }
 }
-
-/*
-class ExhibitionSize {
-  int width;
-  int height;
-
-  ExhibitionSize({
-    this.width,
-    this.height,
-  });
-
-  factory ExhibitionSize.fromRawJson(String str) => ExhibitionSize.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory ExhibitionSize.fromJson(Map<String, dynamic> json) => new ExhibitionSize(
-        width: json["width"],
-        height: json["height"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "width": width,
-        "height": height,
-      };
-}
-*/
 
 class Owner {
   String name;
