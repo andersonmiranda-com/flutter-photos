@@ -30,8 +30,8 @@ class _AlbumPageState extends State<AlbumPage> {
   bool _isMoving = false;
   bool _pageChanged = false;
   int flipDuration = 0;
-  int imageWidth;
-  int imageHeight;
+  int maxImageWidth;
+  int maxImageHeight;
 
   void initState() {
     super.initState();
@@ -47,8 +47,8 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      imageWidth = (MediaQuery.of(context).size.width * 0.45).round();
-      imageHeight = (MediaQuery.of(context).size.height * 0.8).round();
+      maxImageWidth = (MediaQuery.of(context).size.width * 0.45).round();
+      maxImageHeight = (MediaQuery.of(context).size.height * 0.8).round();
 
       _collection = ModalRoute.of(context).settings.arguments;
     });
@@ -126,6 +126,10 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumLeft() {
+    final imageWidth =
+        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
+            maxImageHeight;
+
     return GestureDetector(
       //onTap: () => _decrIndex(),
       child: SizedBox.expand(
@@ -133,8 +137,18 @@ class _AlbumPageState extends State<AlbumPage> {
           alignment: Alignment.centerRight,
           child: CachedNetworkImage(
             imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadLeftIndex].url,
-                height: imageHeight, width: imageWidth),
+                height: maxImageHeight, width: imageWidth.round()),
             fit: BoxFit.contain,
+            placeholder: (context, url) => Container(
+                  width: imageWidth,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation(
+                        Color(0xff303030),
+                      ),
+                    ),
+                  ),
+                ),
           ),
         ),
       ),
@@ -142,6 +156,13 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumRight() {
+    final imageWidth =
+        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
+            maxImageHeight;
+
+    print('imageWidth');
+    print(imageWidth);
+
     return GestureDetector(
       onPanUpdate: (details) => _updateOffset(details),
       //onTap: () => _incrIndex(),
@@ -150,15 +171,18 @@ class _AlbumPageState extends State<AlbumPage> {
           alignment: Alignment.centerLeft,
           child: CachedNetworkImage(
             imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadRightIndex].url,
-                height: imageHeight, width: imageWidth),
+                height: maxImageHeight, width: imageWidth.round()),
             fit: BoxFit.contain,
-            // placeholder: (context, url) => Center(
-            //       child: CircularProgressIndicator(
-            //         valueColor: new AlwaysStoppedAnimation(
-            //           Color(0xff303030),
-            //         ),
-            //       ),
-            //     ),
+            placeholder: (context, url) => Container(
+                  width: imageWidth,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation(
+                        Color(0xff303030),
+                      ),
+                    ),
+                  ),
+                ),
           ),
         ),
       ),
@@ -166,6 +190,10 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumFlipLeft() {
+    final imageWidth =
+        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
+            maxImageHeight;
+
     return Transform(
       transform: Matrix4.identity()
         ..setEntry(3, 2, 0.0008) // perspective
@@ -178,12 +206,15 @@ class _AlbumPageState extends State<AlbumPage> {
             alignment: Alignment.centerRight,
             child: CachedNetworkImage(
               imageUrl: CollectionProvider.getReducedImage(_collection.photos[_flipLeftIndex].url,
-                  height: imageHeight, width: imageWidth),
+                  height: maxImageHeight, width: imageWidth.round()),
               fit: BoxFit.contain,
-              placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation(
-                        Color(0xff303030),
+              placeholder: (context, url) => Container(
+                    width: imageWidth,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation(
+                          Color(0xff303030),
+                        ),
                       ),
                     ),
                   ),
@@ -195,6 +226,10 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumFlipRight() {
+    final imageWidth =
+        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
+            maxImageHeight;
+
     return Transform(
       transform: Matrix4.identity()
         ..setEntry(3, 2, 0.0008) // perspective
@@ -207,12 +242,15 @@ class _AlbumPageState extends State<AlbumPage> {
             alignment: Alignment.centerLeft,
             child: CachedNetworkImage(
               imageUrl: CollectionProvider.getReducedImage(_collection.photos[_flipRightIndex].url,
-                  height: imageHeight, width: imageWidth),
+                  height: maxImageHeight, width: imageWidth.round()),
               fit: BoxFit.contain,
-              placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation(
-                        Color(0xff303030),
+              placeholder: (context, url) => Container(
+                    width: imageWidth,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation(
+                          Color(0xff303030),
+                        ),
                       ),
                     ),
                   ),
