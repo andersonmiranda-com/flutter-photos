@@ -5,13 +5,13 @@ import 'package:AlboomPhotos/src/providers/collections_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class StartPage extends StatefulWidget {
-  StartPage({Key key}) : super(key: key);
+class AddCollectionPage extends StatefulWidget {
+  AddCollectionPage({Key key}) : super(key: key);
 
-  _StartPageState createState() => _StartPageState();
+  _AddCollectionPageState createState() => _AddCollectionPageState();
 }
 
-class _StartPageState extends State<StartPage> {
+class _AddCollectionPageState extends State<AddCollectionPage> {
   final collectionsBloc = new CollectionsBloc();
 
   String _galleryId = "";

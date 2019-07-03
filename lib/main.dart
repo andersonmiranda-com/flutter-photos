@@ -1,4 +1,4 @@
-import 'package:AlboomPhotos/src/pages/start_page.dart';
+import 'package:AlboomPhotos/src/pages/add_collection_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:AlboomPhotos/routes/routes.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: getApplicationRoutes(),
       onGenerateRoute: (RouteSettings settings) {
         //catchall - rota que não tem nomes definidos
-        return MaterialPageRoute(builder: (BuildContext context) => StartPage());
+        return MaterialPageRoute(builder: (BuildContext context) => AddCollectionPage());
       },
     );
   }

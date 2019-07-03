@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:AlboomPhotos/src/bloc/validator.dart';
 import 'package:AlboomPhotos/src/providers/db_provider.dart';
 
-class CollectionsBloc {
+class CollectionsBloc with Validators {
   static final CollectionsBloc _singleton = new CollectionsBloc._internal();
 
   factory CollectionsBloc() {
@@ -15,7 +16,11 @@ class CollectionsBloc {
 
   final _collectionsController = StreamController<List<Collection>>.broadcast();
 
-  Stream<List<Collection>> get collectionsStream => _collectionsController.stream;
+  Stream<List<Collection>> get collectionsStreamAlbums =>
+      _collectionsController.stream.transform(validateAlbums);
+
+  Stream<List<Collection>> get collectionsStreamPhotos =>
+      _collectionsController.stream.transform(validatePhotos);
 
   dispose() {
     _collectionsController?.close();

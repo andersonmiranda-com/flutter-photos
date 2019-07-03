@@ -114,7 +114,7 @@ class DBProvider {
 
   Future<int> deleteAll() async {
     final db = await database;
-    final res = await db.rawDelete('DELETE FROM Collection');
+    final res = await db.rawDelete('DELETE FROM Collections');
     return res;
   }
 }
