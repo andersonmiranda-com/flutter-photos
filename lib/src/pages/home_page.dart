@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:AlboomPhotos/src/bloc/collections_bloc.dart';
 import 'package:AlboomPhotos/src/pages/albums_list_page.dart';
 import 'package:AlboomPhotos/src/pages/photos_list_page.dart';
@@ -19,7 +17,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minhas Fotos'),
+        //title: Text('Minhas Fotos'),
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+
+        bottom: PreferredSize(
+          child: Container(
+            color: Colors.grey,
+            height: 0.2,
+          ),
+          preferredSize: Size.fromHeight(0.2),
+        ),
+
+        title: Image.asset(
+          "assets/logo-horizontal.png",
+          width: 170.0,
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.delete_forever),

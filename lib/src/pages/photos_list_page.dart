@@ -28,35 +28,69 @@ class PhotosListPage extends StatelessWidget {
         }
 
         return ListView.builder(
+          padding: EdgeInsets.symmetric(vertical: 5.0),
           itemCount: collections.length,
-          itemBuilder: (context, i) => Dismissible(
-                key: UniqueKey(),
-                background: Container(color: Colors.red),
-                onDismissed: (direction) => collectionsBloc.deleteCollection(collections[i].id),
-                child: ListTile(
-                  //leading: Icon(Icons.map, color: Theme.of(context).primaryColor),
-                  leading: SizedBox(
-                    width: 60.0,
-                    height: 60.0,
-                    child: CachedNetworkImage(
-                      imageUrl: CollectionProvider.getReducedImage(collections[i].cover,
-                          height: 120, width: 120),
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) {
-                        return Center(
-                          child: Image.asset("assets/loading.png"),
-                        );
-                      },
-                    ),
-                  ),
-                  title: Text(collections[i].name),
-                  subtitle: Text('ID: ${collections[i].id}'),
-                  trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                  onTap: () => Navigator.pushNamed(context, 'gallery', arguments: collections[i]),
-                ),
-              ),
+          itemBuilder: (context, i) => _itemBuilder(context, collections, i),
         );
       },
+    );
+  }
+
+  Widget _itemBuilder(context, collections, i) {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 5.0),
+          child: Dismissible(
+            key: UniqueKey(),
+            background: Container(color: Colors.red),
+            onDismissed: (direction) => collectionsBloc.deleteCollection(collections[i].id),
+            child: ListTile(
+              //leading: Icon(Icons.map, color: Theme.of(context).primaryColor),
+              leading: SizedBox(
+                width: 60.0,
+                height: 60.0,
+                child: CachedNetworkImage(
+                  imageUrl: CollectionProvider.getReducedImage(collections[i].cover,
+                      height: 120, width: 120),
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) {
+                    return Center(
+                      child: Image.asset("assets/loading.png"),
+                    );
+                  },
+                ),
+              ),
+              title: Text(collections[i].name),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('${collections[i].photos.length} fotos'),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.copyright,
+                        size: 12,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 2.0,
+                      ),
+                      Text(
+                        collections[i].ownerName,
+                        style: TextStyle(color: Colors.black26),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+              onTap: () => Navigator.pushNamed(context, 'gallery', arguments: collections[i]),
+            ),
+          ),
+        ),
+        Divider(),
+      ],
     );
   }
 }
