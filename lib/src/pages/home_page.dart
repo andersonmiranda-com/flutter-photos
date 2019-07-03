@@ -13,21 +13,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final collectionsBloc = new CollectionsBloc();
 
-  String _galleryId = "";
-  Collection _collection;
-  bool _loadingInProgress = false;
-  String _errorText;
-
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text('Minhas Fotos'),
-        backgroundColor: Colors.white,
+        title: Text('Minhas Galerias'),
+        //backgroundColor: Colors.white,
         elevation: 0.0,
-
         bottom: PreferredSize(
           child: Container(
             color: Colors.grey,
@@ -35,11 +29,11 @@ class _HomePageState extends State<HomePage> {
           ),
           preferredSize: Size.fromHeight(0.2),
         ),
-
-        title: Image.asset(
-          "assets/logo-horizontal.png",
-          width: 170.0,
-        ),
+//
+//        title: Image.asset(
+//          "assets/logo-horizontal.png",
+//          width: 170.0,
+//        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.delete_forever),
@@ -48,15 +42,16 @@ class _HomePageState extends State<HomePage> {
               })
         ],
       ),
-      body: Stack(
-        children: <Widget>[_callPage(currentIndex), _showLoading()],
-      ),
+      body: _callPage(currentIndex),
       bottomNavigationBar: _crearBottomNavigationBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         //onPressed: () => Navigator.pushNamed(context, 'addColection'),
-        onPressed: () => _addCollectionAlert(context),
+        onPressed: () => showDialog(
+              context: context,
+              builder: (_) => AddCollectionDialog(),
+            ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
@@ -89,14 +84,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _addCollectionAlert(BuildContext context) {
+  void _deleteConfirmAlert(BuildContext context) {
     showDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'Adicionar galeria',
+              'Deletar todas fotos',
               style: TextStyle(color: Colors.black),
               textAlign: TextAlign.center,
             ),
@@ -104,7 +99,58 @@ class _HomePageState extends State<HomePage> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextField(
+                Text('Isto irá deletar todas as galerias', textAlign: TextAlign.center),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Cancelar', style: TextStyle(fontSize: 16.0)),
+                textColor: Colors.blue,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              FlatButton(
+                  child: Text('Sim, deletar!', style: TextStyle(fontSize: 16.0)),
+                  textColor: Colors.red,
+                  onPressed: () {
+                    collectionsBloc.deleteAll();
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          );
+        });
+  }
+}
+
+class AddCollectionDialog extends StatefulWidget {
+  @override
+  _AddCollectionDialogState createState() => new _AddCollectionDialogState();
+}
+
+class _AddCollectionDialogState extends State<AddCollectionDialog> {
+  Collection _collection;
+  final collectionsBloc = new CollectionsBloc();
+
+  String _galleryId = "";
+  bool _loadingInProgress = false;
+  String _errorText;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        'Adicionar galeria',
+        style: TextStyle(color: Colors.black),
+        textAlign: TextAlign.center,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _loadingInProgress
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
+                )
+              : TextField(
                   decoration: InputDecoration(
                     //border: OutlineInputBorder(),
                     hintText: 'Código da galeria',
@@ -118,27 +164,26 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancelar'),
-                textColor: Colors.blue,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              FlatButton(
-                  child: Text('Ver fotos'),
-                  textColor: Colors.red,
-                  onPressed: () {
-                    _checkGalleryId(_galleryId);
-                  }),
-            ],
-          );
-        });
+        ],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Cancelar', style: TextStyle(fontSize: 16.0)),
+          textColor: Colors.blue,
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        FlatButton(
+            child: Text('Abrir', style: TextStyle(fontSize: 16.0)),
+            textColor: Colors.red,
+            onPressed: () {
+              _checkGalleryId(_galleryId);
+            }),
+      ],
+    );
   }
 
-  void _checkGalleryId(uniqueId) {
-    if (uniqueId == "") {
+  void _checkGalleryId(_galleryId) {
+    if (_galleryId == "") {
       setState(() {
         _errorText = "Por favor entre o código da galeria";
       });
@@ -149,7 +194,7 @@ class _HomePageState extends State<HomePage> {
       _loadingInProgress = true;
     });
 
-    CollectionProvider.getCollection(uniqueId).then((response) {
+    CollectionProvider.getCollection(_galleryId).then((response) {
       _collection = response;
       setState(() {
         _loadingInProgress = false;
@@ -173,6 +218,7 @@ class _HomePageState extends State<HomePage> {
 
         if (_collection.type == "photos") {
           Navigator.of(context).pop();
+          Navigator.pushNamed(context, 'gallery', arguments: _collection);
         }
       } else {
         setState(() {
@@ -180,57 +226,6 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
-  }
-
-  void _deleteConfirmAlert(BuildContext context) {
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'Deletar todas fotos',
-              style: TextStyle(color: Colors.black),
-              textAlign: TextAlign.center,
-            ),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Código da galeria',
-                    helperText: _errorText,
-                    helperStyle: TextStyle(color: Colors.red[900]),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      _galleryId = value;
-                      _errorText = null;
-                    });
-                  },
-                ),
-                Text('Isto irá deletar todas as galerias', textAlign: TextAlign.center),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancelar'),
-                textColor: Colors.blue,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              FlatButton(
-                  child: Text('Sim, deletar!'),
-                  textColor: Colors.red,
-                  onPressed: () {
-                    collectionsBloc.deleteAll();
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          );
-        });
   }
 
   Widget _showLoading() {
