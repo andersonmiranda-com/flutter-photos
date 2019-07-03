@@ -41,7 +41,8 @@ class DBProvider {
           ' ownerLogoText TEXT,'
           ' ownerLogoType TEXT,'
           ' ownerLogo TEXT,'
-          ' priv TEXT'
+          ' priv TEXT,'
+          ' photos TEXT'
           ')');
     });
   }
@@ -50,7 +51,7 @@ class DBProvider {
     final db = await database;
     final res = await db.rawInsert(
         "INSERT Into Collections (id, type, name, message, shareable, description, "
-        " photographedAt, status, cover, ownerName, ownerLogoText, ownerLogoType, ownerLogo, priv) "
+        " photographedAt, status, cover, ownerName, ownerLogoText, ownerLogoType, ownerLogo, priv, photos) "
         " VALUES ("
         "  ${newCollection.id},"
         " '${newCollection.type}', "
@@ -65,13 +66,15 @@ class DBProvider {
         " '${newCollection.ownerLogoText}', "
         " '${newCollection.ownerLogoType}', "
         " '${newCollection.ownerLogo}', "
-        " '${newCollection.priv}' )");
+        " '${newCollection.priv}', "
+        " '${newCollection.photos}' )");
     return res;
   }
 
   newCollection(Collection newCollection) async {
     final db = await database;
-    final res = await db.insert('Collections', newCollection.toJson());
+    final newc = newCollection.toJsonDB();
+    final res = await db.insert('Collections', newCollection.toJsonDB());
     return res;
   }
 
@@ -97,7 +100,7 @@ class DBProvider {
 
   Future<int> updateCollection(Collection newCollection) async {
     final db = await database;
-    final res = await db.update('Collections', newCollection.toJson(),
+    final res = await db.update('Collections', newCollection.toJsonDB(),
         where: 'id = ?', whereArgs: [newCollection.id]);
     return res;
   }

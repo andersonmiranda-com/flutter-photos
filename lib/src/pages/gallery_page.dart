@@ -135,7 +135,19 @@ class _GalleryPageState extends State<GalleryPage> {
         child: CachedNetworkImage(
           imageUrl: CollectionProvider.getReducedImage(_collection.photos[index].url),
           fit: BoxFit.cover,
-          placeholder: (context, url) => Center(child: Image.asset("assets/loading.png")),
+          placeholder: (context, url) {
+            return Stack(
+              children: <Widget>[
+                Center(
+                  child: Image.asset("assets/loading.png"),
+                ),
+                Text(
+                  '${index + 1}',
+                  style: TextStyle(color: Colors.black12),
+                ),
+              ],
+            );
+          },
           //errorWidget: (context, url, error) => new Icon(Icons.error),
         ),
       ),

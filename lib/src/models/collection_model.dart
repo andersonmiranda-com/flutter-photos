@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:convert' as prefix0;
+
 class Collections {
   List<Collection> items = new List();
 
@@ -16,6 +18,8 @@ class Collections {
 }
 
 class Collection {
+  final jsonEncoder = JsonEncoder();
+
   int id;
   String type;
   String name;
@@ -106,32 +110,33 @@ class Collection {
     );
   }
 
-  factory Collection.fromJsonDB(Map<String, dynamic> json) {
+  factory Collection.fromJsonDB(Map<String, dynamic> jsonData) {
+    Iterable photoList = json.decode(jsonData["photos"]);
+
     return new Collection(
-      id: json["id"],
-      type: json["type"],
-      name: json["name"],
-      message: json["message"],
+      id: jsonData["id"],
+      type: jsonData["type"],
+      name: jsonData["name"],
+      message: jsonData["message"],
       //downloadable: json["downloadable"],
       //singleDownload: json["single_download"],
       //commentable: json["commentable"],
-      shareable: json["shareable"].toLowerCase() == 'true',
-      description: json["description"],
-      photographedAt: json["photographed_at"],
-      status: json["status"],
+      shareable: jsonData["shareable"].toLowerCase() == 'true',
+      description: jsonData["description"],
+      photographedAt: jsonData["photographed_at"],
+      status: jsonData["status"],
       //selectionLimitDate: DateTime.parse(json["selection_limit_date"]),
       //selectionLimit: json["selection_limit"],
       //friendlyUrl: json["friendly_url"],
       //selectionQuantityType: json["selection_quantity_type"],
-      cover: json["cover"],
+      cover: jsonData["cover"],
       //exhibitionSize: ExhibitionSize.fromJson(json["exhibition_size"]),
-      ownerName: json["ownerName"],
-      ownerLogoText: json["ownerLogoText"],
-      ownerLogoType: json["ownerLogoType"],
-      ownerLogo: json["ownerLogo"],
-      priv: json["priv"].toLowerCase() == 'true',
-      //photos: new List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
-      //totalPhotos: json["total_photos"],
+      ownerName: jsonData["ownerName"],
+      ownerLogoText: jsonData["ownerLogoText"],
+      ownerLogoType: jsonData["ownerLogoType"],
+      ownerLogo: jsonData["ownerLogo"],
+      priv: jsonData["priv"].toLowerCase() == 'true',
+      photos: new List<Photo>.from(photoList.map((x) => Photo.fromJson(x))),
       //totalSelections: json["total_selections"],
     );
   }
@@ -161,7 +166,39 @@ class Collection {
 //        "exhibition_size": exhibitionSize.toJson(),
       "owner": _onwer.toJson(),
       "priv": priv,
-      "photos": new List<dynamic>.from(photos.map((x) => x.toJson())),
+      "photos": new List<dynamic>.from(photos.map((x) => x.toRawJson())),
+      //"total_photos": totalPhotos,
+      //"total_selections": totalSelections,
+    };
+  }
+
+  Map<String, dynamic> toJsonDB() {
+    return {
+      "id": id,
+      "type": type,
+      "name": name,
+      "message": message,
+      //"downloadable": downloadable,
+      //"single_download": singleDownload,
+      //"commentable": commentable,
+      "shareable": shareable,
+      "description": description,
+      "photographedAt": photographedAt,
+      "status": status,
+//        "selection_limit_date":
+//            "${selectionLimitDate.year.toString().padLeft(4, '0')}-${selectionLimitDate.month.toString().padLeft(2, '0')}-${selectionLimitDate.day.toString().padLeft(2, '0')}",
+//        "selection_limit": selectionLimit,
+//        "friendly_url": friendlyUrl,
+//        "selection_quantity_type": selectionQuantityType,
+      "cover": cover,
+//        "exhibition_size": exhibitionSize.toJson(),
+      "ownerName": ownerName,
+      "ownerLogoText": ownerLogoText,
+      "ownerLogoType": ownerLogoType,
+      "ownerLogo": ownerLogo,
+      "priv": priv,
+      "photos": jsonEncoder.convert(photos),
+
       //"total_photos": totalPhotos,
       //"total_selections": totalSelections,
     };

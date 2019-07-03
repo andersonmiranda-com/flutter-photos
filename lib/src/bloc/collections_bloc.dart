@@ -26,7 +26,7 @@ class CollectionsBloc {
   }
 
   addCollection(Collection collection) async {
-    await DBProvider.db.newCollectionRaw(collection);
+    await DBProvider.db.newCollection(collection);
     getCollections();
   }
 
