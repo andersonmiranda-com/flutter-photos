@@ -89,34 +89,37 @@ class _AlbumPageState extends State<AlbumPage> {
 
   Widget _buildAlbumSpread() {
     return SafeArea(
-      child: GestureDetector(
-        onHorizontalDragStart: (details) => _onPanStart(details),
-        onHorizontalDragEnd: (details) => _onPanEnd(details),
-        onHorizontalDragCancel: () => _onPanEnd('cancel'),
-        onHorizontalDragUpdate: (details) => _updateOffset(details),
-        //onTap: () => _incrIndex(),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  _buildAlbumLeft(),
-                  _showflipLeft ? _buildAlbumFlipLeft() : Container(),
-                ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        child: GestureDetector(
+          onHorizontalDragStart: (details) => _onPanStart(details),
+          onHorizontalDragEnd: (details) => _onPanEnd(details),
+          onHorizontalDragCancel: () => _onPanEnd('cancel'),
+          onHorizontalDragUpdate: (details) => _updateOffset(details),
+          //onTap: () => _incrIndex(),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Stack(
+                  children: <Widget>[
+                    _buildAlbumLeft(),
+                    _showflipLeft ? _buildAlbumFlipLeft() : Container(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  _buildAlbumRight(),
-                  _showflipRight ? _buildAlbumFlipRight() : Container(),
-                ],
+              Expanded(
+                child: Stack(
+                  children: <Widget>[
+                    _buildAlbumRight(),
+                    _showflipRight ? _buildAlbumFlipRight() : Container(),
+                  ],
+                ),
               ),
-            ),
-            //_buildAlbumRight(context, index);            //_buildAlbumRight(context, index);
-          ],
+              //_buildAlbumRight(context, index);            //_buildAlbumRight(context, index);
+            ],
+          ),
         ),
       ),
     );
