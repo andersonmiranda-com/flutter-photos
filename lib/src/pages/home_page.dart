@@ -211,9 +211,8 @@ class _AddCollectionDialogState extends State<AddCollectionDialog> {
         collectionsBloc.upsertCollection(_collection);
 
         if (_collection.type == "album") {
-          setState(() {
-            _errorText = "Visualização de álbuns ainda não disponivel";
-          });
+          Navigator.of(context).pop();
+          Navigator.pushNamed(context, 'album', arguments: _collection);
         }
 
         if (_collection.type == "photos") {

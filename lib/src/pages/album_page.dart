@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:AlboomPhotos/src/providers/API.dart';
+import 'package:AlboomPhotos/src/models/collection_model.dart';
+import 'package:AlboomPhotos/src/providers/collections_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AlbumPage extends StatefulWidget {
   AlbumPage({Key key}) : super(key: key);
@@ -12,9 +12,9 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  List proofRows = [];
-  Map proofDetails = {};
-  bool _loadingInProgress;
+  Collection _collection;
+
+  bool _loadingInProgress = false;
   int _index = 1;
   int _spreadLeftIndex = 1;
   int _spreadRightIndex = 2;
@@ -30,11 +30,13 @@ class _AlbumPageState extends State<AlbumPage> {
   bool _isMoving = false;
   bool _pageChanged = false;
   int flipDuration = 0;
+  int imageWidth;
+  int imageHeight;
 
   void initState() {
     super.initState();
-    _loadingInProgress = true;
-    _getProof("u6QfdC");
+//    _loadingInProgress = true;
+//    _getProof("u6QfdC");
   }
 
   @override
@@ -44,6 +46,13 @@ class _AlbumPageState extends State<AlbumPage> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      imageWidth = (MediaQuery.of(context).size.width * 0.45).round();
+      imageHeight = (MediaQuery.of(context).size.height * 0.8).round();
+
+      _collection = ModalRoute.of(context).settings.arguments;
+    });
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -62,21 +71,8 @@ class _AlbumPageState extends State<AlbumPage> {
           ),
         ],
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Colors.grey,
     );
-  }
-
-  void _getProof(uniqueId) {
-    API.getAlbum(uniqueId).then((response) {
-      var proofData = json.decode(response.body);
-      setState(() {
-        proofDetails = proofData["proof"];
-        proofRows = proofData["rows"];
-        _loadingInProgress = false;
-      });
-      print(proofDetails);
-      print(proofRows);
-    });
   }
 
   Widget _buildBody() {
@@ -133,9 +129,8 @@ class _AlbumPageState extends State<AlbumPage> {
         child: Align(
           alignment: Alignment.centerRight,
           child: CachedNetworkImage(
-            imageUrl:
-                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                    proofRows[_spreadLeftIndex]["file"],
+            imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadLeftIndex].url,
+                height: imageHeight, width: imageWidth),
             fit: BoxFit.contain,
           ),
         ),
@@ -151,17 +146,16 @@ class _AlbumPageState extends State<AlbumPage> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: CachedNetworkImage(
-            imageUrl:
-                "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                    proofRows[_spreadRightIndex]["file"],
+            imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadRightIndex].url,
+                height: imageHeight, width: imageWidth),
             fit: BoxFit.contain,
-            placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation(
-                      Color(0xff303030),
-                    ),
-                  ),
-                ),
+            // placeholder: (context, url) => Center(
+            //       child: CircularProgressIndicator(
+            //         valueColor: new AlwaysStoppedAnimation(
+            //           Color(0xff303030),
+            //         ),
+            //       ),
+            //     ),
           ),
         ),
       ),
@@ -180,9 +174,8 @@ class _AlbumPageState extends State<AlbumPage> {
           child: Align(
             alignment: Alignment.centerRight,
             child: CachedNetworkImage(
-              imageUrl:
-                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                      proofRows[_flipLeftIndex]["file"],
+              imageUrl: CollectionProvider.getReducedImage(_collection.photos[_flipLeftIndex].url,
+                  height: imageHeight, width: imageWidth),
               fit: BoxFit.contain,
               placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(
@@ -210,9 +203,8 @@ class _AlbumPageState extends State<AlbumPage> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: CachedNetworkImage(
-              imageUrl:
-                  "https://photomanager-sp.s3.amazonaws.com/ups/andersonmiranda/files/proofs/582/" +
-                      proofRows[_flipRightIndex]["file"],
+              imageUrl: CollectionProvider.getReducedImage(_collection.photos[_flipRightIndex].url,
+                  height: imageHeight, width: imageWidth),
               fit: BoxFit.contain,
               placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(
@@ -239,7 +231,7 @@ class _AlbumPageState extends State<AlbumPage> {
 
   void _incrIndex() {
     setState(() {
-      if (_index < proofRows.length - 3) {
+      if (_index < _collection.photos.length - 3) {
         _index = _index + 2;
         _updateIndexes();
       }
