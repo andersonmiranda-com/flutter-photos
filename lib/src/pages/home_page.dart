@@ -208,7 +208,7 @@ class _AddCollectionDialogState extends State<AddCollectionDialog> {
           return;
         }
 
-        collectionsBloc.addCollection(_collection);
+        collectionsBloc.upsertCollection(_collection);
 
         if (_collection.type == "album") {
           setState(() {
@@ -226,17 +226,5 @@ class _AddCollectionDialogState extends State<AddCollectionDialog> {
         });
       }
     });
-  }
-
-  Widget _showLoading() {
-    if (_loadingInProgress) {
-      return Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
-        ),
-      );
-    } else {
-      return Container();
-    }
   }
 }

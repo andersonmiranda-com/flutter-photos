@@ -35,6 +35,11 @@ class CollectionsBloc with Validators {
     getCollections();
   }
 
+  upsertCollection(Collection collection) async {
+    await DBProvider.db.upsertCollection(collection);
+    getCollections();
+  }
+
   deleteCollection(int id) async {
     await DBProvider.db.deleteCollection(id);
     getCollections();

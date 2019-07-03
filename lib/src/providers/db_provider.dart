@@ -73,7 +73,6 @@ class DBProvider {
 
   newCollection(Collection newCollection) async {
     final db = await database;
-    final newc = newCollection.toJsonDB();
     final res = await db.insert('Collections', newCollection.toJsonDB());
     return res;
   }
@@ -103,6 +102,21 @@ class DBProvider {
     final res = await db.update('Collections', newCollection.toJsonDB(),
         where: 'id = ?', whereArgs: [newCollection.id]);
     return res;
+  }
+
+  Future<int> upsertCollection(Collection newCollection) async {
+    final db = await database;
+
+    final res = await db.query('Collections', where: 'id = ?', whereArgs: [newCollection.id]);
+
+    if (res.isNotEmpty) {
+      final res2 = await db.update('Collections', newCollection.toJsonDB(),
+          where: 'id = ?', whereArgs: [newCollection.id]);
+      return res2;
+    } else {
+      final res2 = await db.insert('Collections', newCollection.toJsonDB());
+      return res2;
+    }
   }
 
   // Eliminar registros
