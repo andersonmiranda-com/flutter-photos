@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'dart:convert' as prefix0;
-
 class Collections {
   List<Collection> items = new List();
 

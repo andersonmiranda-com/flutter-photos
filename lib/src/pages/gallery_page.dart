@@ -60,44 +60,45 @@ class _GalleryPageState extends State<GalleryPage> {
       ),
       backgroundColor: Colors.black54,
       flexibleSpace: FlexibleSpaceBar(
-          title: Text(
-            _collection.name != null ? _collection.name : "",
-            style: TextStyle(color: Colors.white, fontSize: 16.0),
-          ),
-          background: _collection.name != null
-              ? Stack(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: CachedNetworkImage(
-                        imageUrl: CollectionProvider.getReducedImage(_collection.cover,
-                            height: 300, width: 500),
-                        fit: BoxFit.cover,
-                      ),
+        centerTitle: true,
+        title: Text(
+          _collection.name != null ? _collection.name : "",
+          style: TextStyle(color: Colors.white, fontSize: 14.0),
+        ),
+        background: _collection.name != null
+            ? Stack(
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: CachedNetworkImage(
+                      imageUrl: CollectionProvider.getReducedImage(_collection.cover,
+                          height: 300, width: 500),
+                      fit: BoxFit.cover,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          gradient: LinearGradient(
-                              begin: FractionalOffset.topCenter,
-                              end: FractionalOffset.bottomCenter,
-                              colors: [
-                                Color(0x00000000),
-                                Color(0x00000000),
-                                Color(0x20000000),
-                                Color(0x90000000),
-                              ],
-                              stops: [
-                                0.0,
-                                0.5,
-                                0.7,
-                                1.0
-                              ])),
-                    )
-                  ],
-                )
-              : Container(),
-          centerTitle: false),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        gradient: LinearGradient(
+                            begin: FractionalOffset.topCenter,
+                            end: FractionalOffset.bottomCenter,
+                            colors: [
+                              Color(0x00000000),
+                              Color(0x00000000),
+                              Color(0x20000000),
+                              Color(0x90000000),
+                            ],
+                            stops: [
+                              0.0,
+                              0.5,
+                              0.7,
+                              1.0
+                            ])),
+                  )
+                ],
+              )
+            : Container(),
+      ),
     );
   }
 
