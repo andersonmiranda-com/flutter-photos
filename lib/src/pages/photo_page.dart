@@ -31,21 +31,43 @@ class PhotoPageState extends State<PhotoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      //backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Color(0xff303030),
       body: Container(
         child: Stack(
           children: <Widget>[
+            Opacity(
+              opacity: 0.0,
+              child: CachedNetworkImage(
+                imageUrl: CollectionProvider.getReducedImage(
+                    widget._collection.photos[_currentSlide + 2].url,
+                    width: 800,
+                    height: 800),
+              ),
+            ),
+            Opacity(
+              opacity: 0.0,
+              child: CachedNetworkImage(
+                imageUrl: CollectionProvider.getReducedImage(
+                    widget._collection.photos[_currentSlide + 3].url,
+                    width: 800,
+                    height: 800),
+              ),
+            ),
             CarouselSlider(
-                height: MediaQuery.of(context).size.height - 10,
-                aspectRatio: 1.0,
+//                height: MediaQuery.of(context).size.height - 10,
+//                aspectRatio: 1.0,
                 initialPage: widget.index,
+//                autoPlay: true,
+                viewportFraction: 1.1,
+                aspectRatio: MediaQuery.of(context).size.aspectRatio,
                 enableInfiniteScroll: false,
                 items: widget._collection.photos.map((photo) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        margin: EdgeInsets.symmetric(horizontal: 1.0),
                         child: ZoomableWidget(
                           singleFingerPan: false,
                           autoCenter: true,
@@ -88,7 +110,7 @@ class PhotoPageState extends State<PhotoPage> {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: SafeArea(
-                      child: BackButton(),
+                      child: BackButton(color: Colors.white),
                     ),
                   ),
                 ),
