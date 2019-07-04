@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (_) => AddCollectionDialog(),
             ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).accentColor,
       ),
     );
   }
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             actions: <Widget>[
               FlatButton(
                 child: Text('Cancelar', style: TextStyle(fontSize: 16.0)),
-                textColor: Colors.blue,
+                textColor: Colors.grey,
                 onPressed: () => Navigator.of(context).pop(),
               ),
               FlatButton(
@@ -169,7 +169,7 @@ class _AddCollectionDialogState extends State<AddCollectionDialog> {
       actions: <Widget>[
         FlatButton(
           child: Text('Cancelar', style: TextStyle(fontSize: 16.0)),
-          textColor: Colors.blue,
+          textColor: Colors.grey,
           onPressed: () => Navigator.of(context).pop(),
         ),
         FlatButton(
