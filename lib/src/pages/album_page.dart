@@ -30,6 +30,7 @@ class _AlbumPageState extends State<AlbumPage> {
   bool _isMoving = false;
   bool _pageChanged = false;
   int flipDuration = 0;
+  double imageWidth;
   int maxImageWidth;
   int maxImageHeight;
 
@@ -47,10 +48,14 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      maxImageWidth = (MediaQuery.of(context).size.width * 0.45).round();
-      maxImageHeight = (MediaQuery.of(context).size.height * 0.8).round();
-
       _collection = ModalRoute.of(context).settings.arguments;
+
+      maxImageWidth = (MediaQuery.of(context).size.width * 0.45).round();
+      maxImageHeight = (MediaQuery.of(context).size.height * 0.83).round();
+
+      imageWidth = (_collection.photos[_spreadRightIndex].width /
+              _collection.photos[_spreadRightIndex].height) *
+          maxImageHeight;
     });
 
     return Scaffold(
@@ -104,6 +109,7 @@ class _AlbumPageState extends State<AlbumPage> {
               Expanded(
                 child: Stack(
                   children: <Widget>[
+                    _buildAlbumCacheLeft(),
                     _buildAlbumLeft(),
                     _showflipLeft ? _buildAlbumFlipLeft() : Container(),
                   ],
@@ -112,6 +118,7 @@ class _AlbumPageState extends State<AlbumPage> {
               Expanded(
                 child: Stack(
                   children: <Widget>[
+                    _buildAlbumCacheRight(),
                     _buildAlbumRight(),
                     _showflipRight ? _buildAlbumFlipRight() : Container(),
                   ],
@@ -126,10 +133,6 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumLeft() {
-    final imageWidth =
-        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
-            maxImageHeight;
-
     return GestureDetector(
       //onTap: () => _decrIndex(),
       child: SizedBox.expand(
@@ -155,14 +158,18 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
+  Widget _buildAlbumCacheLeft() {
+    return Opacity(
+      opacity: 0.0,
+      child: CachedNetworkImage(
+        imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadLeftIndex + 2].url,
+            height: maxImageHeight, width: imageWidth.round()),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
   Widget _buildAlbumRight() {
-    final imageWidth =
-        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
-            maxImageHeight;
-
-    print('imageWidth');
-    print(imageWidth);
-
     return GestureDetector(
       onPanUpdate: (details) => _updateOffset(details),
       //onTap: () => _incrIndex(),
@@ -189,11 +196,18 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
-  Widget _buildAlbumFlipLeft() {
-    final imageWidth =
-        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
-            maxImageHeight;
+  Widget _buildAlbumCacheRight() {
+    return Opacity(
+      opacity: 0.0,
+      child: CachedNetworkImage(
+        imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadRightIndex + 2].url,
+            height: maxImageHeight, width: imageWidth.round()),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
 
+  Widget _buildAlbumFlipLeft() {
     return Transform(
       transform: Matrix4.identity()
         ..setEntry(3, 2, 0.0008) // perspective
@@ -226,10 +240,6 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumFlipRight() {
-    final imageWidth =
-        (_collection.photos[_spreadLeftIndex].width / _collection.photos[_spreadLeftIndex].height) *
-            maxImageHeight;
-
     return Transform(
       transform: Matrix4.identity()
         ..setEntry(3, 2, 0.0008) // perspective
@@ -319,7 +329,7 @@ class _AlbumPageState extends State<AlbumPage> {
     //   print(_offset.dx);
 
     if (_directionLeft || _index > 2) {
-      _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 1.5) * -1 * 180;
+      _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 2) * -1 * 180;
 
       if (!_directionLeft) {
         _flipAngleDeg = 180 + _flipAngleDeg;
