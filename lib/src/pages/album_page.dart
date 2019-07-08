@@ -14,7 +14,6 @@ class AlbumPage extends StatefulWidget {
 class _AlbumPageState extends State<AlbumPage> {
   Collection _collection;
 
-  bool _loadingInProgress = false;
   int _index = 1;
   int _spreadLeftIndex = 1;
   int _spreadRightIndex = 2;
@@ -33,10 +32,10 @@ class _AlbumPageState extends State<AlbumPage> {
   double imageWidth;
   int maxImageWidth;
   int maxImageHeight;
+  Widget _thisImage;
 
   void initState() {
     super.initState();
-//    _loadingInProgress = true;
 //    _getProof("u6QfdC");
   }
 
@@ -59,9 +58,10 @@ class _AlbumPageState extends State<AlbumPage> {
     });
 
     return Scaffold(
+      backgroundColor: Color(0xFF5f5e5e),
       body: Stack(
         children: <Widget>[
-          _buildBody(),
+          _buildAlbumSpread(),
           Row(
             children: <Widget>[
               Expanded(
@@ -76,20 +76,7 @@ class _AlbumPageState extends State<AlbumPage> {
           ),
         ],
       ),
-      backgroundColor: Colors.grey,
     );
-  }
-
-  Widget _buildBody() {
-    if (_loadingInProgress) {
-      return new Center(
-        child: new CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation(Color(0xff404040)),
-        ),
-      );
-    } else {
-      return _buildAlbumSpread();
-    }
   }
 
   Widget _buildAlbumSpread() {
@@ -109,7 +96,7 @@ class _AlbumPageState extends State<AlbumPage> {
               Expanded(
                 child: Stack(
                   children: <Widget>[
-                    _buildAlbumCacheLeft(),
+                    //_buildAlbumCacheLeft(),
                     _buildAlbumLeft(),
                     _showflipLeft ? _buildAlbumFlipLeft() : Container(),
                   ],
@@ -118,7 +105,7 @@ class _AlbumPageState extends State<AlbumPage> {
               Expanded(
                 child: Stack(
                   children: <Widget>[
-                    _buildAlbumCacheRight(),
+                    //_buildAlbumCacheRight(),
                     _buildAlbumRight(),
                     _showflipRight ? _buildAlbumFlipRight() : Container(),
                   ],
@@ -133,38 +120,34 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumLeft() {
+    if (_spreadLeftIndex == 0) {
+      _thisImage =
+          Image.asset("assets/transparent.png", height: maxImageHeight * 1.0, width: imageWidth);
+    } else {
+      _thisImage = CachedNetworkImage(
+        imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadLeftIndex].url,
+            height: maxImageHeight, width: imageWidth.round()),
+        fit: BoxFit.contain,
+        placeholder: (context, url) => Container(
+              width: imageWidth,
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation(
+                    Color(0x80303030),
+                  ),
+                ),
+              ),
+            ),
+      );
+    }
+
     return GestureDetector(
       //onTap: () => _decrIndex(),
       child: SizedBox.expand(
         child: Align(
           alignment: Alignment.centerRight,
-          child: CachedNetworkImage(
-            imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadLeftIndex].url,
-                height: maxImageHeight, width: imageWidth.round()),
-            fit: BoxFit.contain,
-            placeholder: (context, url) => Container(
-                  width: imageWidth,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation(
-                        Color(0xff303030),
-                      ),
-                    ),
-                  ),
-                ),
-          ),
+          child: _thisImage,
         ),
-      ),
-    );
-  }
-
-  Widget _buildAlbumCacheLeft() {
-    return Opacity(
-      opacity: 0.0,
-      child: CachedNetworkImage(
-        imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadLeftIndex + 2].url,
-            height: maxImageHeight, width: imageWidth.round()),
-        fit: BoxFit.contain,
       ),
     );
   }
@@ -185,7 +168,7 @@ class _AlbumPageState extends State<AlbumPage> {
                   child: Center(
                     child: CircularProgressIndicator(
                       valueColor: new AlwaysStoppedAnimation(
-                        Color(0xff303030),
+                        Color(0x80303030),
                       ),
                     ),
                   ),
@@ -196,14 +179,57 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
+  Widget _buildAlbumCacheLeft() {
+    return Stack(
+      children: <Widget>[
+        Opacity(
+          opacity: 0.0,
+          child: CachedNetworkImage(
+            imageUrl: CollectionProvider.getReducedImage(
+                _collection.photos[_spreadLeftIndex + 4].url,
+                height: maxImageHeight,
+                width: imageWidth.round()),
+            fit: BoxFit.contain,
+          ),
+        ),
+        Opacity(
+          opacity: 0.0,
+          child: CachedNetworkImage(
+            imageUrl: CollectionProvider.getReducedImage(
+                _collection.photos[_spreadLeftIndex + 2].url,
+                height: maxImageHeight,
+                width: imageWidth.round()),
+            fit: BoxFit.contain,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildAlbumCacheRight() {
-    return Opacity(
-      opacity: 0.0,
-      child: CachedNetworkImage(
-        imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadRightIndex + 2].url,
-            height: maxImageHeight, width: imageWidth.round()),
-        fit: BoxFit.contain,
-      ),
+    return Stack(
+      children: <Widget>[
+        Opacity(
+          opacity: 0.0,
+          child: CachedNetworkImage(
+            imageUrl: CollectionProvider.getReducedImage(
+                _collection.photos[_spreadRightIndex + 4].url,
+                height: maxImageHeight,
+                width: imageWidth.round()),
+            fit: BoxFit.contain,
+          ),
+        ),
+        Opacity(
+          opacity: 0.0,
+          child: CachedNetworkImage(
+            imageUrl: CollectionProvider.getReducedImage(
+                _collection.photos[_spreadRightIndex + 2].url,
+                height: maxImageHeight,
+                width: imageWidth.round()),
+            fit: BoxFit.contain,
+          ),
+        ),
+      ],
     );
   }
 
@@ -227,7 +253,7 @@ class _AlbumPageState extends State<AlbumPage> {
                     child: Center(
                       child: CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation(
-                          Color(0xff303030),
+                          Color(0x80303030),
                         ),
                       ),
                     ),
@@ -259,7 +285,7 @@ class _AlbumPageState extends State<AlbumPage> {
                     child: Center(
                       child: CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation(
-                          Color(0xff303030),
+                          Color(0x80303030),
                         ),
                       ),
                     ),
@@ -328,7 +354,11 @@ class _AlbumPageState extends State<AlbumPage> {
     //   print('offset dx');
     //   print(_offset.dx);
 
-    if (_directionLeft || _index > 2) {
+    print('fliping');
+    print(_index);
+
+    if ((_directionLeft && _index < _collection.photos.length - 2) ||
+        (!_directionLeft && _index > 2)) {
       _flipAngleDeg = _offset.dx / (MediaQuery.of(context).size.width / 2) * -1 * 180;
 
       if (!_directionLeft) {
@@ -360,7 +390,8 @@ class _AlbumPageState extends State<AlbumPage> {
         _flipAngleDegRight = _flipAngleDeg;
         _showflipLeft = false;
         _showflipRight = true;
-        if (!_pageChanged && _directionLeft) {
+
+        if (!_pageChanged && _directionLeft && _index < _collection.photos.length - 2) {
           _spreadRightIndex = _spreadRightIndex + 2;
           _flipLeftIndex = _flipLeftIndex + 2;
           _pageChanged = true;
@@ -398,8 +429,10 @@ class _AlbumPageState extends State<AlbumPage> {
         _index = _index - 2;
       }
     } else {
-      if (_directionLeft) {
+      if (_directionLeft && _index < _collection.photos.length - 2) {
         _index = _index + 2;
+        print(_index);
+        print(_collection.photos.length);
       }
     }
 
