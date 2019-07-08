@@ -30,6 +30,12 @@ class PhotoPageState extends State<PhotoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _preCache0 = (_currentSlide > 1) ? _currentSlide - 1 : _currentSlide;
+    final _preCache1 =
+        (_currentSlide < widget._collection.photos.length - 1) ? _currentSlide + 1 : _currentSlide;
+    final _preCache2 =
+        (_currentSlide < widget._collection.photos.length - 2) ? _currentSlide + 2 : _currentSlide;
+
     return Scaffold(
       //backgroundColor: Theme.of(context).backgroundColor,
       backgroundColor: Color(0xff303030),
@@ -40,7 +46,7 @@ class PhotoPageState extends State<PhotoPage> {
               opacity: 0.0,
               child: CachedNetworkImage(
                 imageUrl: CollectionProvider.getReducedImage(
-                    widget._collection.photos[_currentSlide + 2].url,
+                    widget._collection.photos[_preCache2].url,
                     width: 800,
                     height: 800),
               ),
@@ -49,7 +55,16 @@ class PhotoPageState extends State<PhotoPage> {
               opacity: 0.0,
               child: CachedNetworkImage(
                 imageUrl: CollectionProvider.getReducedImage(
-                    widget._collection.photos[_currentSlide + 3].url,
+                    widget._collection.photos[_preCache1].url,
+                    width: 800,
+                    height: 800),
+              ),
+            ),
+            Opacity(
+              opacity: 0.0,
+              child: CachedNetworkImage(
+                imageUrl: CollectionProvider.getReducedImage(
+                    widget._collection.photos[_preCache0].url,
                     width: 800,
                     height: 800),
               ),
