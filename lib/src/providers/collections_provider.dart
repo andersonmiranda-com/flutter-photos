@@ -39,8 +39,20 @@ class CollectionProvider {
     }
   }
 
-  static String getReducedImage(String imageUrl, {int width: 150, int height: 150}) {
-    String alfredUrl = "https://alfred.alboompro.com/resize/width/$width/heigth/$height/url/";
+  static String getReducedImage(String imageUrl,
+      {int width: 150, int height: 150, int quality: 90}) {
+    String alfredUrl =
+        "https://alfred.alboompro.com/resize/width/$width/heigth/$height/quality/$quality/url/";
+    String url = imageUrl.replaceAll('https://', '');
+    url = url.replaceAll('http://', '');
+    //print(alfredUrl + Uri.encodeFull(url));
+    return alfredUrl + Uri.encodeFull(url);
+  }
+
+  static String getCroppedImage(String imageUrl,
+      {int width: 150, int height: 150, String mp: 'cl', int quality: 90}) {
+    String alfredUrl =
+        "https://alfred.alboompro.com/crop/width/$width/heigth/$height/mp/$mp/quality/$quality/url/";
     String url = imageUrl.replaceAll('https://', '');
     url = url.replaceAll('http://', '');
     //print(alfredUrl + Uri.encodeFull(url));

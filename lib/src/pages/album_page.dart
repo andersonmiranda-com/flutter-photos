@@ -153,27 +153,52 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   Widget _buildAlbumRight() {
+    if (_spreadRightIndex == 1) {
+      _thisImage = CachedNetworkImage(
+        imageUrl: CollectionProvider.getReducedImage(
+            CollectionProvider.getCroppedImage(_collection.photos[0].url,
+                height: _collection.photos[_spreadRightIndex].height,
+                width: (_collection.photos[_spreadRightIndex].width / 2).round(),
+                mp: 'cl'),
+            height: maxImageHeight,
+            width: imageWidth.round()),
+        fit: BoxFit.contain,
+        placeholder: (context, url) => Container(
+              width: imageWidth,
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation(
+                    Color(0x80303030),
+                  ),
+                ),
+              ),
+            ),
+      );
+    } else {
+      _thisImage = CachedNetworkImage(
+        imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadRightIndex].url,
+            height: maxImageHeight, width: imageWidth.round()),
+        fit: BoxFit.contain,
+        placeholder: (context, url) => Container(
+              width: imageWidth,
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation(
+                    Color(0x80303030),
+                  ),
+                ),
+              ),
+            ),
+      );
+    }
+
     return GestureDetector(
       onPanUpdate: (details) => _updateOffset(details),
       //onTap: () => _incrIndex(),
       child: SizedBox.expand(
         child: Align(
           alignment: Alignment.centerLeft,
-          child: CachedNetworkImage(
-            imageUrl: CollectionProvider.getReducedImage(_collection.photos[_spreadRightIndex].url,
-                height: maxImageHeight, width: imageWidth.round()),
-            fit: BoxFit.contain,
-            placeholder: (context, url) => Container(
-                  width: imageWidth,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation(
-                        Color(0x80303030),
-                      ),
-                    ),
-                  ),
-                ),
-          ),
+          child: _thisImage,
         ),
       ),
     );
