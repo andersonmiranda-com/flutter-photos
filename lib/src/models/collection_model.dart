@@ -25,6 +25,7 @@ class Collection {
 //  bool downloadable;
 //  bool singleDownload;
 //  bool commentable;
+  String diagramation;
   bool shareable;
   dynamic description;
   String photographedAt;
@@ -52,6 +53,7 @@ class Collection {
 //    this.downloadable,
 //    this.singleDownload,
 //    this.commentable,
+      this.diagramation,
       this.shareable,
       this.description,
       this.photographedAt,
@@ -87,6 +89,7 @@ class Collection {
       //downloadable: json["downloadable"],
       //singleDownload: json["single_download"],
       //commentable: json["commentable"],
+      diagramation: json["diagramation"],
       shareable: json["shareable"],
       description: json["description"],
       photographedAt: json["photographed_at"],
@@ -119,6 +122,7 @@ class Collection {
       //downloadable: json["downloadable"],
       //singleDownload: json["single_download"],
       //commentable: json["commentable"],
+      diagramation: jsonData["diagramation"],
       shareable: jsonData["shareable"].toLowerCase() == 'true',
       description: jsonData["description"],
       photographedAt: jsonData["photographed_at"],
@@ -151,6 +155,7 @@ class Collection {
       //"downloadable": downloadable,
       //"single_download": singleDownload,
       //"commentable": commentable,
+      "diagramation": diagramation,
       "shareable": shareable,
       "description": description,
       "photographed_at": photographedAt,
@@ -179,6 +184,7 @@ class Collection {
       //"downloadable": downloadable,
       //"single_download": singleDownload,
       //"commentable": commentable,
+      "diagramation": diagramation,
       "shareable": shareable,
       "description": description,
       "photographedAt": photographedAt,

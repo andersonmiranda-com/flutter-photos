@@ -32,6 +32,7 @@ class DBProvider {
           ' type TEXT,'
           ' name TEXT,'
           ' message TEXT,'
+          ' diagramation TEXT,'
           ' shareable TEXT,'
           ' description TEXT,'
           ' photographedAt TEXT,'
@@ -50,13 +51,14 @@ class DBProvider {
   newCollectionRaw(Collection newCollection) async {
     final db = await database;
     final res = await db.rawInsert(
-        "INSERT Into Collections (id, type, name, message, shareable, description, "
+        "INSERT Into Collections (id, type, name, message, diagramation, shareable, description, "
         " photographedAt, status, cover, ownerName, ownerLogoText, ownerLogoType, ownerLogo, priv, photos) "
         " VALUES ("
         "  ${newCollection.id},"
         " '${newCollection.type}', "
         " '${newCollection.name}', "
         " '${newCollection.message}', "
+        " '${newCollection.diagramation}', "
         " '${newCollection.shareable}', "
         " '${newCollection.description}', "
         " '${newCollection.photographedAt.toString()}', "

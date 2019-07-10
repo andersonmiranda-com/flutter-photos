@@ -51,7 +51,7 @@ class AlbumsListPage extends StatelessWidget {
                 width: 60.0,
                 height: 60.0,
                 child: CachedNetworkImage(
-                  imageUrl: CollectionProvider.getReducedImage(collections[i].cover,
+                  imageUrl: CollectionProvider.getCroppedImage(collections[i].cover,
                       height: 120, width: 120),
                   fit: BoxFit.cover,
                   placeholder: (context, url) {
